@@ -4,8 +4,7 @@ This document must be updated daily every time you finish a work session.
 
 ## Rohan Sen
 
-### 2024-01-02 - Brief description
-Expanded description including how much time was spent on task.
-
-### 2024-01-03 - Brief description
-Expanded description including how much time was spent on task.
+### 2026-01-06 - Preliminary docs
+- README filled out
+- PROPOSAL uploaded
+- code dump from networking lab
