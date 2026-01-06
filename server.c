@@ -1,4 +1,4 @@
-#include "networking.h"
+#include "networkstructure.h"
 #include <signal.h>
 
 void subserver_logic(int client_socket){
