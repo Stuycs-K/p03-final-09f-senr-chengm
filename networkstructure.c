@@ -1,4 +1,4 @@
-#include "networking.h"
+#include "networkstructure.h"
 
 /*Create and bind a socket.
 * Place the socket in a listening state.
