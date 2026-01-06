@@ -21,4 +21,4 @@ After they connect, it's self-explanatory on how to chat.
 
 ### Resources/ References:
 
-[![GTK Docs (researching, may not use)]](https://www.gtk.org/docs/)
+[GTK Docs (researching, may not use)](https://www.gtk.org/docs/)
