@@ -19,6 +19,8 @@ number to connect to.
 
 After they connect, it's self-explanatory on how to chat.
 
+Type !exit to return to the user menu
+
 ### Resources/ References:
 
 [GTK Docs (researching, may not use)](https://www.gtk.org/docs/)
