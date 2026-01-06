@@ -12,8 +12,8 @@
 #include <netdb.h>
 
 
-#ifndef NETWORKING_H
-#define NETWORKING_H
+#ifndef NETWORKSTRUCTURE_H
+#define NETWORKSTRUCTURE_H
 void err(int i, char*message);
 int server_setup();
 int client_tcp_handshake(char*server_address);
