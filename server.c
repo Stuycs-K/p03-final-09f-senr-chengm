@@ -19,7 +19,7 @@ void create(){
   if(r<0)err();
 
   //file
-  int w_file = open("story.txt", O_WRONLY | O_TRUNC | O_CREAT, 0600);
+  int w_file = open("messages.txt", O_WRONLY | O_TRUNC | O_CREAT, 0600);
   if(w_file < 0)err();
   close(w_file);
 }
