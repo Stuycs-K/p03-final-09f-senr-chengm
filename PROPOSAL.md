@@ -11,20 +11,18 @@ We want to make a messaging app that allows users to choose and message other ac
 # Intended usage:
 
 - On start asks for username
-- List of other existing users 
+- List of other existing users
 - Open messages with user and receive info of client from server
 - message user, then wait for response
 
 # Technical Details:
 
-- Creating chat server to message people (mem alloc) - Both 
+- Creating chat server to message people (mem alloc) - Both
 - webserver used to store data in a file (sockets, files, forking) - Both
-- semaphore so message then wait for response (semaphore) - Matthew
+- Select used to read from the clients - Matthew
 - a list of chats with other users to pick from - Both
 - username asked for when client starts, used to load chats with others if present on server - Rohan
 - IF TIME PERMITS: GTK front end - Rohan
-- IF TIME PERMITS: GROUP CHAT FEATURE? - Both
-
 
 # Intended pacing:
 
@@ -38,7 +36,7 @@ We want to make a messaging app that allows users to choose and message other ac
 1/7 end of day or 1/8 start of class
 - Start and finish memory allocation
 - Complete helper functions ( like view, etc. )
-- Start semaphore logic 
+- Start semaphore logic
 - Start socket logic
 
 1/8 end of day or 1/9 start of class
@@ -49,7 +47,7 @@ We want to make a messaging app that allows users to choose and message other ac
 Weekend:
 - Finish up code for MVP
 - TESTING TESTING TESTING
-1/12 - 1/13 
+1/12 - 1/13
 - Have a MVP: including ability to chat / connect between two clients
 - Maybe being able to choose which client to talk to?
 1/13 - 1/16
@@ -58,4 +56,3 @@ Weekend:
 - Client username input to load chats with specific clients
 - Maybe a group chat feature
 - Maybe front end code to make design look better
-
