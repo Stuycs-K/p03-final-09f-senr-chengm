@@ -72,7 +72,16 @@ int main(int argc, char *argv[] ) {
     int client_socket = server_tcp_handshake(listen_socket);
     pid_t f = fork();
     if (f == 0) {
+      char* buf[1024];
       close(listen_socket);
+      int n = recv(client_socket, buf, 1024, 0);
+      if (n == 0) {
+        close(client_socket);
+        printf("Socket closed\n");
+        exit(0);
+      }
+      buf[n-1] = '\0';
+      printf("'%s'\n", buf);
       subserver_logic(client_socket);
       close(client_socket);
       exit(0);
