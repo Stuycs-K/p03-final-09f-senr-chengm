@@ -1,5 +1,17 @@
 #include "networkstructure.h"
 
+void view(){
+  FILE* r_file = fopen("messages.txt", "r");
+  char buff[128];
+  while(fgets(buff, sizeof(buff), r_file) != NULL){
+    buff[strcspn(buff,"\n")] = '\0';
+    printf("%s ", buff);
+  }
+  printf("\n");
+  fclose(r_file);
+}
+
+
 void clientLogic(int server_socket){
   char buf[1024];
   printf("Enter a message: \n");
@@ -27,6 +39,7 @@ int main(int argc, char *argv[] ) {
   int server_socket = client_tcp_handshake(IP);
   printf("client connected.\n");
   while(1) {
+    view();
     clientLogic(server_socket);
   }
 }
