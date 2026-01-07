@@ -20,4 +20,5 @@ int client_tcp_handshake(char*server_address);
 int server_tcp_handshake(int listen_socket);
 void view();
 void create();
+void rem();
 #endif

@@ -35,6 +35,20 @@ void view(){
   fclose(r_file);
 }
 
+void rem(){
+  union semun us;
+  int semd = semget(key, 1, 0 );
+  if(semd >= 0){
+    semctl(semd, 0, IPC_RMID, us);
+  }
+
+  int shmd = shmget(key, sizeof(int), 0);
+  if(shmd >= 0){
+    shmctl(shmd, IPC_RMID, 0);
+  }
+
+}
+
 void subserver_logic(int client_socket){
   char buf[1024];
   while(1) {
