@@ -30,8 +30,6 @@ void subserver_logic(int client_socket){
 int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
   while(1) {
-    rem();
-    create();
     int client_socket = server_tcp_handshake(listen_socket);
     pid_t f = fork();
     if (f == 0) {
