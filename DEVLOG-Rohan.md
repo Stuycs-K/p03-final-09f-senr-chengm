@@ -20,3 +20,7 @@ This document must be updated daily every time you finish a work session.
 
 ### 2026-01-07 HW - GTK Research
 - started creating GTK skeleton
+
+
+### 2026-01-08 - GTK UI
+- Textbox implemetned, need to connect to rest of code
