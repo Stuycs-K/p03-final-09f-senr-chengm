@@ -12,5 +12,6 @@ This document must be updated daily every time you finish a work session.
 -Added helper function command logic to server and client loops
 -Added shared memory through create command, also renamed file name that stores the messages
 
-### 2026-01-07 - Discussion
+### 2026-01-07 - Discussion and Code
 -Discussed with partner about what to do
+-Added write command in server to write to the file ( store the story )
