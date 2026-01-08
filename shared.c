@@ -6,22 +6,7 @@ union semun {
   unsigned short  *array;   //used for SETALL
   struct seminfo  *__buf;
 };
-//int semd = semget(key, 1, 0);
-//   struct sembuf hold;
-//   hold.sem_num = 0;
-//
-//   hold.sem_flg = SEM_UNDO; // Necessary???
-//
-//   hold.sem_op = -1;
-//   printf("Attempting to access story\n");
-//   semop(semd,&hold,1);
-//   printf("Semaphore found!\n");
-//   char line_buff[256];
-//   char line_buff2[256];
-//   int fd = open("story.txt", O_RDWR);
-//   if(fd<0)err();
-//   int shmd = shmget(key, sizeof(int), 0);
-//   int *data = shmat(shmd, 0, 0);
+
 void create(){
   //Shared memory
   int shmd;

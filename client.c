@@ -1,16 +1,5 @@
 #include "networkstructure.h"
 
-void view(){
-  FILE* r_file = fopen("messages.txt", "r");
-  char buff[128];
-  while(fgets(buff, sizeof(buff), r_file) != NULL){
-    buff[strcspn(buff,"\n")] = '\0';
-    printf("%s ", buff);
-  }
-  printf("\n");
-  fclose(r_file);
-}
-
 
 void clientLogic(int server_socket){
   char buf[1024];
@@ -47,7 +36,7 @@ int main(int argc, char *argv[] ) {
   }
   send(server_socket, buf, strlen(buf), 0);
   while(1) {
-    view();
+
     clientLogic(server_socket);
   }
 }
