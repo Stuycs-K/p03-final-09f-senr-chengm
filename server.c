@@ -1,5 +1,5 @@
 #include "networkstructure.h"
-
+#include "shared.h"
 void view(){
   FILE* r_file = fopen("messages.txt", "r");
   char buff[128];
@@ -10,6 +10,7 @@ void view(){
   printf("\n");
   fclose(r_file);
 }
+
 
 void subserver_logic(int client_socket){
   char buf[1024];
@@ -34,7 +35,7 @@ int main(int argc, char *argv[] ) {
     int client_socket = server_tcp_handshake(listen_socket);
     pid_t f = fork();
     if (f == 0) {
-      char* buf[1024];
+      char buf[1024];
       close(listen_socket);
       int n = recv(client_socket, buf, 1024, 0);
       if (n == 0) {
@@ -42,7 +43,8 @@ int main(int argc, char *argv[] ) {
         printf("Socket closed\n");
         exit(0);
       }
-      write("messages.txt", buf, n);
+      int fd = open("messages.txt", O_WRONLY );
+      write(fd, buf, n);
       buf[n-1] = '\0';
       printf("'%s'\n", buf);
       subserver_logic(client_socket);
