@@ -41,7 +41,8 @@ int main(int argc, char *argv[] ) {
         printf("Socket closed\n");
         exit(0);
       }
-      int fd = open("messages.txt", O_WRONLY );
+
+      int fd = open("messages.txt",O_WRONLY);
       write(fd, buf, n);
       buf[n-1] = '\0';
       printf("'%s'\n", buf);
