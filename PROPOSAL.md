@@ -36,11 +36,9 @@ We want to make a messaging app that allows users to choose and message other ac
 1/7 end of day or 1/8 start of class
 - Start and finish memory allocation
 - Complete helper functions ( like view, etc. )
-- Start semaphore logic
 - Start socket logic
 
 1/8 end of day or 1/9 start of class
-- Finish semaphore logic
 - Continue, possibly finish socket logic
 - Start and maybe finish server and client code / logic
 - MAYBE TESTING
