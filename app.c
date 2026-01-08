@@ -6,14 +6,12 @@ activate (GtkApplication *app,
 {
   GtkWidget *window;
   GtkWidget *button;
-
+  GtkEntryBuffer* buffer;
   window = gtk_application_window_new (app);
   gtk_window_set_title (GTK_WINDOW (window), "c_chat");
   gtk_window_set_default_size (GTK_WINDOW (window), 800, 200);
-
   
-  
-  message = gtk_entry_new_with_buffer();
+  message = gtk_entry_new_with_buffer(buffer);
   gtk_widget_set_halign(message, GTK_ALIGN_RIGHT);
   gtk_widget_set_valign(message, GTK_ALIGN_BOTTOM);
   gtk_window_set_child (GTK_WINDOW (window), message);
