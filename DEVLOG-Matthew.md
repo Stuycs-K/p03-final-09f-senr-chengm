@@ -16,3 +16,9 @@ This document must be updated daily every time you finish a work session.
 -Discussed with partner about what to do
 -Added write command in server to write to the file ( store the story )
 -Inserted, but commented, possible semaphore code while writing
+
+### 2026-01-08 - Fixing up server, removing unnecssary code
+-Removed view file code in client because client doesn't access file
+-Fixed server write code by adding file descriptor, include statement
+-Removed create and rem commands in server for now, also server bugfixing
+-Compiled and tested username and message sending back and forth
