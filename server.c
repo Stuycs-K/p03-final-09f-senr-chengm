@@ -42,6 +42,7 @@ int main(int argc, char *argv[] ) {
         printf("Socket closed\n");
         exit(0);
       }
+      write("messages.txt", buf, n);
       buf[n-1] = '\0';
       printf("'%s'\n", buf);
       subserver_logic(client_socket);
