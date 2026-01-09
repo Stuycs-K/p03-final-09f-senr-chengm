@@ -46,9 +46,6 @@ int main(int argc, char *argv[] ) {
     read_fds = cons;
     select(fd_max + 1, &read_fds, NULL, NULL, NULL);
     for(int fd = 0; fd < fd_max; fd++){
-      if (!FD_ISSET(fd, &read_fds)) {
-        continue;
-      }
       if(fd == listen_socket){
         int client_socket = server_tcp_handshake(listen_socket);
         FD_SET(client_socket, &cons);
@@ -63,7 +60,7 @@ int main(int argc, char *argv[] ) {
         }
         else{
           buff[n-1] = '\0';
-          printf("'%d': %s\n", fd, buff);
+          printf("Message from'%d': %s\n", fd, buff);
           for(int j = 0; j <= fd_max; j++){
             if(FD_ISSET(j,&cons) && j != listen_socket && j != fd){
               send(j,buff,n,0);
