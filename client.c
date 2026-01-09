@@ -53,7 +53,7 @@ int main(int argc, char *argv[] ) {
       send(server_socket, buf, strlen(buf), 0);
     }
 
-    if(FD_ISSET(server_socket), &read_fds){
+    if(FD_ISSET(server_socket, &read_fds)){
       int n = recv(server_socket, buf, sizeof(buf), 0);
       if(n <= 0){
         printf("Server disconnected\n");
