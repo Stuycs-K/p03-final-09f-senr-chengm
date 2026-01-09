@@ -1,7 +1,7 @@
 #include <gtk/gtk.h>
 #include "networkstructure.h"
 
-void clientLogic(int server_socket){
+static void clientLogic(int server_socket){
   send(server_socket, buf, strlen(buf), 0);
   int n = recv(server_socket, buf, 1024, 0);
   if (n==0) {
@@ -12,7 +12,16 @@ void clientLogic(int server_socket){
   buf[n] = '\0';
 }
 
-
+static void connect(char* IP){
+  int server_socket = client_tcp_handshake(IP);
+  char buf[1024];
+  if (fgets(buf, 1024, stdin) == NULL) {
+    close(server_socket);
+    printf("Client closed\n");
+    exit(0);
+  }
+    
+    }
 
 static void
 activate (GtkApplication *app,
@@ -21,15 +30,6 @@ activate (GtkApplication *app,
   char* IP = "127.0.0.1";
   if(argc>1){
     IP=argv[1];
-  }
-  int server_socket = client_tcp_handshake(IP);
-  printf("client connected.\n");
-  char buf[1024];
-  printf("Enter a username: \n");
-  if (fgets(buf, 1024, stdin) == NULL) {
-    close(server_socket);
-    printf("Client closed\n");
-    exit(0);
   }
   send(server_socket, buf, strlen(buf), 0);
   clientLogic(server_socket);
