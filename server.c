@@ -38,7 +38,7 @@ int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
   while(1) {
     char buffer[100];
-
+    int client_socket = server_tcp_handshake(listen_socket);
     FD_ZERO(&read_fds);
     //assume this functuion correcly sets up a listening socket
 
@@ -56,7 +56,7 @@ int main(int argc, char *argv[] ) {
     //if socket, accept the connection
     //assume this function works correctly
     if (FD_ISSET(listen_socket, &read_fds)) {
-      int client_socket = server_tcp_handshake(listen_socket);
+       client_socket = server_tcp_handshake(listen_socket);
     }
     pid_t f = fork();
     if (f == 0) {
