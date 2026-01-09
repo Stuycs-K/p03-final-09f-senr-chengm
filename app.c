@@ -8,6 +8,11 @@ activate (GtkApplication *app,
   GtkWidget *button;
   GtkEntryBuffer* buffer;
   window = gtk_application_window_new (app);
+
+  GtkWidget *label = gtk_label_new("WIP: messages will appear here");
+  gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+  gtk_box_append(GTK_BOX(box), label);
+
   gtk_window_set_title (GTK_WINDOW (window), "c_chat");
   gtk_window_set_default_size (GTK_WINDOW (window), 800, 200);
   
