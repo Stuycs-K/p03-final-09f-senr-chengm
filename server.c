@@ -12,29 +12,26 @@ void view(){
 }
 
 
-void subserver_logic(int client_socket){
-  char buf[1024];
-  while(1) {
-    int n = recv(client_socket, buf, 1024, 0);
-    if (n == 0) {
-      close(client_socket);
-      printf("Socket closed\n");
-      exit(0);
-    }
-    int fd = open("messages.txt",O_WRONLY);
-    write(fd, buf, n);
-    close(fd);
-    buf[n-1] = '\0';
-    printf("'%s'\n", buf);
-    send(client_socket, buf, n, 0);
-  }
-}
+// void subserver_logic(int client_socket){
+//   char buf[1024];
+//   fd_set read_fds;
+//   while(1) {
+//     int n = recv(client_socket, buf, 1024, 0);
+//     if (n == 0) {
+//       close(client_socket);
+//       printf("Socket closed\n");
+//       exit(0);
+//     }
+//     int fd = open("messages.txt",O_WRONLY);
+//     write(fd, buf, n);
+//     close(fd);
+//     buf[n-1] = '\0';
+//     printf("'%s'\n", buf);
+//     send(client_socket, buf, n, 0);
+//   }
+// }
 
 int main(int argc, char *argv[] ) {
-  fd_set read_fds;
-
-
-
   int listen_socket = server_setup();
   while(1) {
     char buffer[100];
