@@ -15,7 +15,6 @@ activate (GtkApplication *app,
   GtkWidget *label = gtk_label_new("WIP: messages will appear here");
   gtk_label_set_xalign(GTK_LABEL(label), 0.0);
   gtk_box_append(GTK_BOX(box), label);
-
   gtk_window_set_title (GTK_WINDOW (window), "c_chat");
   gtk_window_set_default_size (GTK_WINDOW (window), 800, 200);
   buffer = gtk_entry_buffer_new(NULL, -1);
@@ -33,8 +32,8 @@ main (int    argc,
 {
   GtkApplication *app;
   int status;
-
-  app = gtk_application_new ("org.gtk.example", G_APPLICATION_DEFAULT_FLAGS);
+  app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_DEFAULT_FLAGS);
+  g_set_prgname("c_chat");
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
   status = g_application_run (G_APPLICATION (app), argc, argv);
   g_object_unref (app);
