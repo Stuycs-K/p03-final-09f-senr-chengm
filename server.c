@@ -44,28 +44,28 @@ int main(int argc, char *argv[] ) {
 
   while(1) {
     read_fds = master;
-
-    char buffer[100];
-    int client_socket = server_tcp_handshake(listen_socket);
-    pid_t f = fork();
-    if (f == 0) {
-      char buf[1024];
-      close(listen_socket);
-      int n = recv(client_socket, buf, 1024, 0);
-      if (n == 0) {
-        close(client_socket);
-        printf("Socket closed\n");
-        exit(0);
+    select(fd_max + 1, &read_fds, NULL, NULL, NULL);
+    for(int fd = 0; fd < fd_max; fd++){
+      if (!FD_ISSET(fd, &read_fds)) {
+        continue;
       }
-
-
-      buf[n-1] = '\0';
-      printf("'%s'\n", buf);
-      subserver_logic(client_socket);
-      close(client_socket);
-      exit(0);
-    } else {
-      close(client_socket);
+      if(fd == listen_socket){
+        int client_socket = server_tcp_handshake(listen_socket);
+        FD_SET(client_socket, &master);
+        if(client_socket > fd_max){
+          fd_max = client_socket;
+        }
+      }
+      else{
+        int n = recv(fd, buff, 1024, 0);
+        if(n <= 0){
+          close(fd);
+        }
+        else{
+          buff[n-1] = '\0';
+          printf("'%d': %s\n", fd, buff);
+        }
+      }
     }
   }
 }
