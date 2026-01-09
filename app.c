@@ -19,8 +19,8 @@ activate (GtkApplication *app,
   gtk_window_set_default_size (GTK_WINDOW (window), 800, 200);
   buffer = gtk_entry_buffer_new(NULL, -1);
   message = gtk_entry_new_with_buffer(buffer);
-  gtk_widget_set_halign(message, GTK_ALIGN_RIGHT);
-  gtk_widget_set_valign(message, GTK_ALIGN_BOTTOM);
+  gtk_widget_set_halign(message, GTK_DIR_RIGHT);
+  gtk_widget_set_valign(message, GTK_POS_BOTTOM);
   gtk_box_append(GTK_BOX(box), message);
 
   gtk_window_present (GTK_WINDOW (window));
