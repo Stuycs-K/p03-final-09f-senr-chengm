@@ -10,3 +10,5 @@ server.o: server.c networkstructure.h shared.h
 	@gcc -c server.c
 clean:
 	@rm *.o client server
+
+ 
