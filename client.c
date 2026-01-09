@@ -24,6 +24,21 @@ static void
 activate (GtkApplication *app,
           gpointer        user_data)
 {
+  char* IP = "127.0.0.1";
+  if(argc>1){
+    IP=argv[1];
+  }
+  int server_socket = client_tcp_handshake(IP);
+  printf("client connected.\n");
+  char buf[1024];
+  printf("Enter a username: \n");
+  if (fgets(buf, 1024, stdin) == NULL) {
+    close(server_socket);
+    printf("Client closed\n");
+    exit(0);
+  }
+  send(server_socket, buf, strlen(buf), 0);
+  clientLogic(server_socket);
   GtkWidget *window;
   GtkWidget *box;
   GtkWidget *message;
