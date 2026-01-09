@@ -1,16 +1,5 @@
+#include <gtk/gtk.h>
 #include "networkstructure.h"
-
-void view(){
-  FILE* r_file = fopen("messages.txt", "r");
-  char buff[128];
-  while(fgets(buff, sizeof(buff), r_file) != NULL){
-    buff[strcspn(buff,"\n")] = '\0';
-    printf("%s ", buff);
-  }
-  printf("\n");
-  fclose(r_file);
-}
-
 
 void clientLogic(int server_socket){
   char buf[1024];
@@ -31,23 +20,44 @@ void clientLogic(int server_socket){
   printf("recieved: '%s'\n", buf);
 }
 
-int main(int argc, char *argv[] ) {
-  char* IP = "127.0.0.1";
-  if(argc>1){
-    IP=argv[1];
-  }
-  int server_socket = client_tcp_handshake(IP);
-  printf("client connected.\n");
-  char buf[1024];
-  printf("Enter a username: \n");
-  if (fgets(buf, 1024, stdin) == NULL) {
-    close(server_socket);
-    printf("Client closed\n");
-    exit(0);
-  }
-  send(server_socket, buf, strlen(buf), 0);
-  while(1) {
-    view();
-    clientLogic(server_socket);
-  }
+static void
+activate (GtkApplication *app,
+          gpointer        user_data)
+{
+  GtkWidget *window;
+  GtkWidget *box;
+  GtkWidget *message;
+  GtkEntryBuffer *buffer;
+  
+  window = gtk_application_window_new (app);
+  box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
+  gtk_window_set_child(GTK_WINDOW(window), box);
+  GtkWidget *label = gtk_label_new("Messages will appear here");
+  gtk_label_set_xalign(GTK_LABEL(label), 0.0);
+  gtk_box_append(GTK_BOX(box), label);
+  gtk_window_set_title (GTK_WINDOW (window), "c_chat");
+  gtk_window_set_default_size (GTK_WINDOW (window), 200, 600);
+  buffer = gtk_entry_buffer_new(NULL, -1);
+  message = gtk_entry_new_with_buffer(buffer);
+  gtk_entry_set_placeholder_text(GTK_ENTRY(message), "Type a message...");
+  gtk_widget_set_halign(message, GTK_DIR_RIGHT);
+  gtk_widget_set_valign(message, GTK_POS_BOTTOM);
+  gtk_box_append(GTK_BOX(box), message);
+
+  gtk_window_present (GTK_WINDOW (window));
+}
+
+int
+main (int    argc,
+      char **argv)
+{
+  GtkApplication *app;
+  int status;
+  app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_DEFAULT_FLAGS);
+  g_set_prgname("c_chat");
+  g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
+  status = g_application_run (G_APPLICATION (app), argc, argv);
+  g_object_unref (app);
+
+  return status;
 }
