@@ -64,6 +64,11 @@ int main(int argc, char *argv[] ) {
         else{
           buff[n-1] = '\0';
           printf("'%d': %s\n", fd, buff);
+          for(int j = 0; j <= fd_max, j++){
+            if(FD_ISSET(j,&master) && j != listen_socket && j != fd){
+              send(j,buff,n,0);
+            }
+          }
         }
       }
     }
