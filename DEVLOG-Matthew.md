@@ -26,3 +26,6 @@ This document must be updated daily every time you finish a work session.
 -Commented out subserver code to switch out of forking server
 -Added server code and logic with select
 -Added / replaced client code and logic with select
+
+### 2026-01-09 - Trying to fix updated server and client code
+-Added client print message to prompt user for messages / input
