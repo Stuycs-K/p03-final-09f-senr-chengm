@@ -27,14 +27,16 @@ int main(int argc, char *argv[] ) {
   }
   int server_socket = client_tcp_handshake(IP);
   printf("client connected.\n");
+
+  fd_set read_fds;
   char buf[1024];
-  printf("Enter a username: \n");
-  if (fgets(buf, 1024, stdin) == NULL) {
-    close(server_socket);
-    printf("Client closed\n");
-    exit(0);
-  }
-  send(server_socket, buf, strlen(buf), 0);
+  // printf("Enter a username: \n");
+  // if (fgets(buf, 1024, stdin) == NULL) {
+  //   close(server_socket);
+  //   printf("Client closed\n");
+  //   exit(0);
+  // }
+  // send(server_socket, buf, strlen(buf), 0);
   while(1) {
 
     clientLogic(server_socket);
