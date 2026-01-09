@@ -33,28 +33,20 @@ void view(){
 
 int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
+  fd_set read_fds, cons;
+  FD_ZERO(&cons);
+  //add listen_socket and stdin to the set
+  FD_SET(listen_socket, &cons);
+  int fd_max = listen_socket;
+
+  char buff[1024];
+  //listen socket is larger than STDIN_FILENO, so listen_socket+1 is the 1 larger than max fd value.
+
   while(1) {
+    read_fds = master;
+
     char buffer[100];
     int client_socket = server_tcp_handshake(listen_socket);
-    FD_ZERO(&read_fds);
-    //assume this functuion correcly sets up a listening socket
-
-    //add listen_socket and stdin to the set
-    FD_SET(listen_socket, &read_fds);
-    //add stdin's file desciptor
-    FD_SET(STDIN_FILENO, &read_fds);
-    //listen socket is larger than STDIN_FILENO, so listen_socket+1 is the 1 larger than max fd value.
-    int i = select(listen_socket+1, &read_fds, NULL, NULL, NULL);
-
-    //if standard in, use fgets
-    if (FD_ISSET(STDIN_FILENO, &read_fds)) {
-      fgets(buffer, sizeof(buffer), stdin);
-    }
-    //if socket, accept the connection
-    //assume this function works correctly
-    if (FD_ISSET(listen_socket, &read_fds)) {
-       client_socket = server_tcp_handshake(listen_socket);
-    }
     pid_t f = fork();
     if (f == 0) {
       char buf[1024];
