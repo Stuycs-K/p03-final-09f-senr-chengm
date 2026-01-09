@@ -43,7 +43,7 @@ int main(int argc, char *argv[] ) {
   //listen socket is larger than STDIN_FILENO, so listen_socket+1 is the 1 larger than max fd value.
 
   while(1) {
-    read_fds = master;
+    read_fds = cons;
     select(fd_max + 1, &read_fds, NULL, NULL, NULL);
     for(int fd = 0; fd < fd_max; fd++){
       if (!FD_ISSET(fd, &read_fds)) {
@@ -51,7 +51,7 @@ int main(int argc, char *argv[] ) {
       }
       if(fd == listen_socket){
         int client_socket = server_tcp_handshake(listen_socket);
-        FD_SET(client_socket, &master);
+        FD_SET(client_socket, &cons);
         if(client_socket > fd_max){
           fd_max = client_socket;
         }
@@ -64,8 +64,8 @@ int main(int argc, char *argv[] ) {
         else{
           buff[n-1] = '\0';
           printf("'%d': %s\n", fd, buff);
-          for(int j = 0; j <= fd_max, j++){
-            if(FD_ISSET(j,&master) && j != listen_socket && j != fd){
+          for(int j = 0; j <= fd_max; j++){
+            if(FD_ISSET(j,&cons) && j != listen_socket && j != fd){
               send(j,buff,n,0);
             }
           }
