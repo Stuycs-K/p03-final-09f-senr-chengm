@@ -38,7 +38,31 @@ int main(int argc, char *argv[] ) {
   // }
   // send(server_socket, buf, strlen(buf), 0);
   while(1) {
+    FD_ZERO(&read_fds);
+    FD_SET(STDIN_FILENO, &read_fds);
+    FD_SET(server_socket, &read_fds);
 
-    clientLogic(server_socket);
+    int maxfd = STDIN_FILENO;
+    if(server_socket > maxfd){
+      maxfd = server_socket;
+    }
+
+    select(maxfd + 1, &read_fds, NULL, NULL, NULL);
+    if(FD_ISSET(STDIN_FILENO, &read_fds)){
+      if(fgets(buf, sizeof(buf), stdin) == NULL)break;
+      send(server_socket, buf, strlen(buf), 0);
+    }
+
+    if(FD_ISSET(server_socket), &read_fds){
+      int n = recv(server_socket, buf, sizeof(buf), 0);
+      if(n <= 0){
+        printf("Server disconnected\n");
+        break;
+      }
+      buf[n] = '\0';
+      printf("%s", buf);
+    }
   }
+  close(server_socket);
+  return 0;
 }
