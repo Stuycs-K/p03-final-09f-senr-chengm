@@ -62,18 +62,8 @@ main (int    argc,
   GtkApplication *app;
   int status;
   
-  
-   char* IP = "127.0.0.1";
-  if(argc>1){
-    IP=argv[1];
-  }
-  int server_socket = client_tcp_handshake(IP);
-  printf("client connected.\n");
-  while(1) {
-    clientLogic(server_socket);
-  }
-  
-  
+  char* IP = "127.0.0.1";
+  connect(IP);  
   app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_DEFAULT_FLAGS);
   g_set_prgname("c_chat");
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);

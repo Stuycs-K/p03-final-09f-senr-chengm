@@ -25,6 +25,11 @@ This document must be updated daily every time you finish a work session.
 ### 2026-01-08 - GTK UI
 - Textbox implemetned, need to connect to rest of code
 
-### 2026-01-08 - GTK Progress
+### 2026-01-08 HW - GTK Progress
 - Figured out how to install GTK on linux (sudo apt install libgtk-4-dev) using a vm
 - Started merging the client logic into the gtk, though will have to update properly with actual code from Matthew
+
+### 2026-01-08 - GTK Progress
+- Researched and worked on the activate function, which should bind to the textbox and send the message on enter
+- still cant test on school computer
+- cleaned up files
