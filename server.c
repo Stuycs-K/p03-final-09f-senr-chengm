@@ -32,16 +32,26 @@ int main(int argc, char *argv[] ) {
     //add listen_socket and stdin to the set
     FD_SET(listen_socket, &read_fds);
     int fd_max = listen_socket;
-    int client_socket = server_tcp_handshake(listen_socket);
-    pid_t f = fork();
-    if (f == 0) {
-      char buf[1024];
-      close(listen_socket);
-      subserver_logic(client_socket);
-      close(client_socket);
-      exit(0);
-    } else {
-      close(client_socket);
+
+    for(int i = 0; i < client_count; i++){
+      FD_SET(clients[i], &read_fds);
+      if(clients[i] > fd_max){
+        fd_max = clients[i];
+      }
     }
+
+    //select Code
+    select(max_fd + 1, &read_fds, NULL, NULL, NULL);
+    int client_socket = server_tcp_handshake(listen_socket);
+    // pid_t f = fork();
+    // if (f == 0) {
+    //   char buf[1024];
+    //   close(listen_socket);
+    //   subserver_logic(client_socket);
+    //   close(client_socket);
+    //   exit(0);
+    // } else {
+    //   close(client_socket);
+    // }
   }
 }
