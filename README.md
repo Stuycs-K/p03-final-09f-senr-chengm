@@ -11,16 +11,17 @@ c_chat is a messaging app that allows users to connect to and message other acti
 
 ### Instructions:
 
-The user runs ./client which opens the messaging app.
+The user runs ./client which opens the messaging app as a window.
 
 Once running, the user is prompted to enter a name.
-They are then given a numbered list of other active users, and can enter the
-number to connect to.
+
+The user is placed into a chatroom with other active members.
 
 After they connect, it's self-explanatory on how to chat.
 
-Type !exit to return to the user menu
+MVP:
+Open the app and immediately chat with other users in one large forum. 
 
 ### Resources/ References:
 
-[GTK Docs (researching, may not use)](https://www.gtk.org/docs/)
+[GTK Docs](https://www.gtk.org/docs/)

@@ -26,3 +26,13 @@ This document must be updated daily every time you finish a work session.
 -Commented out subserver code to switch out of forking server
 -Added server code and logic with select
 -Added / replaced client code and logic with select
+
+### 2026-01-09 - Trying to fix updated server and client code
+-Added client print message to prompt user for messages / input
+-Working and discussing with partner about a plan for the MVP
+
+### 2026-01-11 - More overall changes and bugfixes
+-Tried adjust server code to not use forking
+-Adjusted select code and added client tracking code in server
+-Finished adding new server code
+-Add client connection code in server
