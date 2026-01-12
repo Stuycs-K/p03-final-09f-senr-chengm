@@ -1,21 +1,5 @@
 #include "networkstructure.h"
 
-
-
-void subserver_logic(int client_socket){
-  char buf[1024];
-  while(1) {
-    int n = recv(client_socket, buf, sizeof(buf)-1, 0);
-    if (n <= 0) {
-      close(client_socket);
-      printf("Socket closed\n");
-      exit(0);
-    }
-    buf[n] = '\0';
-    send(client_socket, buf, n, 0);
-  }
-}
-
 int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
 
@@ -45,7 +29,7 @@ int main(int argc, char *argv[] ) {
 
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
-      clients[client_count] = client;
+      clients[client_count] = client_socket;
       client_count++;
       printf("Client connected \n");
     }
@@ -62,12 +46,11 @@ int main(int argc, char *argv[] ) {
           printf("Client disconnected\n");
           continue;
         }
-        n++;
-        buff[n] = '\n';
+        buff[n] = '\0';
 
         //send code
         for(int j = 0; j < client_count; j++){
-          send(clients[j], buff, n, 0);
+          send(clients[j], buff, strlen(buff), 0);
         }
       }
     }
