@@ -5,7 +5,7 @@ static int server_socket = -1;
 static GtkWidget *chat_label = NULL;
 
 static void clientLogic(GtkEntry *entry, int server_socket){
-  char *text = gtk_entry_get_text(entry);
+  char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
   send(server_socket, text, strlen(text), 0);
   char buf[1024];
   int n = recv(server_socket, buf, 1024, 0);
@@ -18,11 +18,11 @@ static void clientLogic(GtkEntry *entry, int server_socket){
 
   char *old = gtk_entry_get_text(GTK_LABEL(chat_label));
 
-  char *new = g_append(old, "\n");
-  new = g_append(new, "\n");
+  char *new = g_strconcat(old, "\n");
+  new = g_strconcat(new, "\n");
   gtk_label_set_text(GTK_LABEL(chat_label), new);
   g_free(new);
-  gtk_entry_set_text(entry, "");
+  gtk_editable_set_text(GTK_EDITABLE(entry), "");
 }
 
 static void connectServer(char* IP){
