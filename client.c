@@ -1,8 +1,13 @@
 #include <gtk/gtk.h>
 #include "networkstructure.h"
 
-static void clientLogic(int server_socket){
-  send(server_socket, buf, strlen(buf), 0);
+static int server_socket = -1;
+static GtkWidget *chat_label = NULL;
+
+static void clientLogic(GtkEntry *entry, int server_socket){
+  char *text = gtk_entry_get_text(entry);
+  send(server_socket, text, strlen(text), 0);
+  char buf[1024];
   int n = recv(server_socket, buf, 1024, 0);
   if (n==0) {
     close(server_socket);
@@ -14,25 +19,12 @@ static void clientLogic(int server_socket){
 
 static void connect(char* IP){
   int server_socket = client_tcp_handshake(IP);
-  char buf[1024];
-  if (fgets(buf, 1024, stdin) == NULL) {
-    close(server_socket);
-    printf("Client closed\n");
-    exit(0);
-  }
-    
-    }
+}
 
 static void
 activate (GtkApplication *app,
           gpointer        user_data)
 {
-  char* IP = "127.0.0.1";
-  if(argc>1){
-    IP=argv[1];
-  }
-  send(server_socket, buf, strlen(buf), 0);
-  clientLogic(server_socket);
   GtkWidget *window;
   GtkWidget *box;
   GtkWidget *message;
@@ -41,6 +33,7 @@ activate (GtkApplication *app,
   box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
   gtk_window_set_child(GTK_WINDOW(window), box);
   GtkWidget *label = gtk_label_new("Messages will appear here");
+  chat_label = label;
   gtk_label_set_xalign(GTK_LABEL(label), 0.0);
   gtk_box_append(GTK_BOX(box), label);
   gtk_window_set_title (GTK_WINDOW (window), "c_chat");
