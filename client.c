@@ -4,11 +4,16 @@
 static int server_socket = -1;
 static GtkWidget *chat_label = NULL;
 
-static void clientLogic(GtkEntry *entry, int server_socket){
+static void clientLogic(GtkEntry *entry, gpointer user_data){
+  user_data = NULL;
   char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
+  if (!text || !*text) { 
+    g_free(text); 
+    return; 
+  }
   send(server_socket, text, strlen(text), 0);
   char buf[1024];
-  int n = recv(server_socket, buf, 1024, 0);
+  int n = recv(server_socket, buf, sizeof(buf)-1, 0);
   if (n==0) {
     close(server_socket);
     printf("Client closed\n");
@@ -45,14 +50,14 @@ activate (GtkApplication *app,
   gtk_label_set_xalign(GTK_LABEL(label), 0.0);
   gtk_box_append(GTK_BOX(box), label);
   gtk_window_set_title (GTK_WINDOW (window), "c_chat");
-  gtk_window_set_default_size (GTK_WINDOW (window), 200, 600);
+  gtk_window_set_default_size (GTK_WINDOW (window), 400, 600);
   buffer = gtk_entry_buffer_new(NULL, -1);
   message = gtk_entry_new_with_buffer(buffer);
   gtk_entry_set_placeholder_text(GTK_ENTRY(message), "Type a message...");
-  gtk_widget_set_halign(message, GTK_DIR_RIGHT);
-  gtk_widget_set_valign(message, GTK_POS_BOTTOM);
+  gtk_widget_set_halign(message, GTK_ALIGN_END);
+  gtk_widget_set_valign(message, GTK_ALIGN_END);
   gtk_box_append(GTK_BOX(box), message);
-  g_signal_connect (message, "activate", G_CALLBACK (clientLogic), buffer);  
+  g_signal_connect (message, "activate", G_CALLBACK (clientLogic), NULL);  
   gtk_window_present (GTK_WINDOW (window));
 }
 
