@@ -1,5 +1,12 @@
 #include <signal.h>
 
+union semun {
+  int val;                  //used for SETVAL
+  struct semid_ds *buf;     //used for IPC_STAT and IPC_SET
+  unsigned short  *array;   //used for SETALL
+  struct seminfo  *__buf;
+};
+
 void create(){
   //Shared memory
   int shmd;

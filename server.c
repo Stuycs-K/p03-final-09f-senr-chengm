@@ -18,6 +18,15 @@ void subserver_logic(int client_socket){
 
 int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
+  fd_set read_fds, cons;
+  FD_ZERO(&cons);
+  //add listen_socket and stdin to the set
+  FD_SET(listen_socket, &cons);
+  int fd_max = listen_socket;
+
+  char buff[1024];
+  //listen socket is larger than STDIN_FILENO, so listen_socket+1 is the 1 larger than max fd value.
+
   while(1) {
     int client_socket = server_tcp_handshake(listen_socket);
     pid_t f = fork();
