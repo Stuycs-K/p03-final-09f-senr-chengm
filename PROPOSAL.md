@@ -12,17 +12,16 @@ We want to make a messaging app that allows users to choose and message other ac
 
 - On start asks for username
 - List of other existing users
-- Open messages with user and receive info of client from server
-- message user, then wait for response
+- message chat, and all other online members immediately see message
 
 # Technical Details:
 
 - Creating chat server to message people (mem alloc) - Both
-- webserver used to store data in a file (sockets, files, forking) - Both
+- webserver used to store data in a file (sockets, select) - Both
 - Select used to read from the clients - Matthew
 - a list of chats with other users to pick from - Both
-- username asked for when client starts, used to load chats with others if present on server - Rohan
-- IF TIME PERMITS: GTK front end - Rohan
+- username asked for when client starts, used to identify messagers on the server - Rohan
+- GTK front end - Rohan
 
 # Intended pacing:
 
@@ -52,5 +51,4 @@ Weekend:
 - Finish adding extra features
 - Viewing all possible clients / online users for chatting
 - Client username input to load chats with specific clients
-- Maybe a group chat feature
 - Maybe front end code to make design look better
