@@ -15,9 +15,17 @@ static void clientLogic(GtkEntry *entry, int server_socket){
     exit(0);
   }
   buf[n] = '\0';
+
+  char *old = char *text = gtk_entry_get_text(GTK_LABEL(chat_label));
+
+  char *new = g_append(old, "\n");
+  new = g_append(new, "\n");
+  gtk_label_set_text(GTK_LABEL(chat_label), new);
+  g_free(new);
+  gtk_entry_set_text(entry, "");
 }
 
-static void connect(char* IP){
+static void connectServer(char* IP){
   int server_socket = client_tcp_handshake(IP);
 }
 
@@ -56,7 +64,7 @@ main (int    argc,
   int status;
   
   char* IP = "127.0.0.1";
-  connect(IP);  
+  connectServer(IP);  
   app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_DEFAULT_FLAGS);
   g_set_prgname("c_chat");
   g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
