@@ -14,24 +14,23 @@ static void clientLogic(GtkEntry *entry, gpointer user_data){
   send(server_socket, text, strlen(text), 0);
   char buf[1024];
   int n = recv(server_socket, buf, sizeof(buf)-1, 0);
-  if (n==0) {
+  if (n<=0) {
     close(server_socket);
     printf("Client closed\n");
     exit(0);
   }
   buf[n] = '\0';
 
-  char *old = gtk_label_get_text(GTK_LABEL(chat_label));
+  const char *old = gtk_label_get_text(GTK_LABEL(chat_label));
 
-  char *new = g_strconcat(old, "\n");
-  new = g_strconcat(new, "\n");
+  char *new = g_strconcat(old, "\n", buf, NULL);
   gtk_label_set_text(GTK_LABEL(chat_label), new);
   g_free(new);
   gtk_editable_set_text(GTK_EDITABLE(entry), "");
 }
 
 static void connectServer(char* IP){
-  int server_socket = client_tcp_handshake(IP);
+  server_socket = client_tcp_handshake(IP);
 }
 
 static void
