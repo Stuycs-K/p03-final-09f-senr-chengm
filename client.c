@@ -3,7 +3,8 @@
   #include "networkstructure.h"
 
   static int server_socket = -1;
-  static GtkWidget *chat_label = NULL;
+  static GtkTextBuffer *chat_buffer = NULL;
+
 
   static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
     if (cond & (G_IO_HUP | G_IO_ERR)) return FALSE;
@@ -13,10 +14,10 @@
     if (n <= 0) return FALSE;
     buf[n] = '\0';
 
-    const char *old = gtk_label_get_text(GTK_LABEL(chat_label));
-    char *newtxt = g_strconcat(old, "\n", buf, NULL);
-    gtk_label_set_text(GTK_LABEL(chat_label), newtxt);
-    g_free(newtxt);
+    GtkTextIter end;
+    gtk_text_buffer_get_end_iter(chat_buffer, &end);
+    gtk_text_buffer_insert(chat_buffer, &end, buf, -1);
+    gtk_text_buffer_insert(chat_buffer, &end, "\n", -1);
 
     return TRUE;
   }
@@ -48,10 +49,13 @@
     window = gtk_application_window_new (app);
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_window_set_child(GTK_WINDOW(window), box);
-    GtkWidget *label = gtk_label_new("");
-    chat_label = label;
-    gtk_label_set_xalign(GTK_LABEL(label), 0.0);
-    gtk_box_append(GTK_BOX(box), label);
+    GtkWidget *view = gtk_text_view_new();
+    gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
+    gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
+    chat_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
+    gtk_box_append(GTK_BOX(box), view);
+    char* IP = "127.0.0.1";
+    connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
     gtk_window_set_default_size (GTK_WINDOW (window), 400, 600);
     buffer = gtk_entry_buffer_new(NULL, -1);
@@ -70,9 +74,6 @@
   {
     GtkApplication *app;
     int status;
-
-    char* IP = "127.0.0.1";
-    connectServer(IP);
     app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_DEFAULT_FLAGS);
     g_set_prgname("c_chat");
     g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);

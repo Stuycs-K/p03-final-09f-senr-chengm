@@ -50,7 +50,7 @@ int main(int argc, char *argv[] ) {
 
         //send code
         for(int j = 0; j < client_count; j++){
-          send(clients[j], buff, strlen(buff), 0);
+          send(clients[j], buff, n, 0);
         }
       }
     }
