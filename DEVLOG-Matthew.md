@@ -29,3 +29,6 @@ This document must be updated daily every time you finish a work session.
 
 ### 2026-01-09 - Trying to fix updated server and client code
 -Added client print message to prompt user for messages / input
+-Working and discussing with partner about a plan for the MVP
+
+### 2026-01-11 -
