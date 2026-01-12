@@ -16,7 +16,7 @@ static void clientLogic(GtkEntry *entry, int server_socket){
   }
   buf[n] = '\0';
 
-  char *old = char *text = gtk_entry_get_text(GTK_LABEL(chat_label));
+  char *old = gtk_entry_get_text(GTK_LABEL(chat_label));
 
   char *new = g_append(old, "\n");
   new = g_append(new, "\n");

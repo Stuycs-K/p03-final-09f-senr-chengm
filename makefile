@@ -1,6 +1,6 @@
 compile: networkstructure.o client.o #server.o
 #	@gcc -o server server.o networkstructure.o
-	@gcc $(shell pkg-config --cflags gtk4) -o client client.o $(shell pkg-config --libs gtk4)
+	@gcc $(shell pkg-config --cflags gtk4) -o client client.o networkstructure.o $(shell pkg-config --libs gtk4)
 #	@gcc -o client client.o networkstructure.o
 networkstructure.o: networkstructure.c networkstructure.h
 	@gcc -c networkstructure.c
