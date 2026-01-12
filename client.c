@@ -6,9 +6,8 @@ static GtkWidget *chat_label = NULL;
 
 static void clientLogic(GtkEntry *entry, gpointer user_data){
   user_data = NULL;
-  char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
+  const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
   if (!text || !*text) { 
-    g_free(text); 
     return; 
   }
   send(server_socket, text, strlen(text), 0);
@@ -25,7 +24,6 @@ static void clientLogic(GtkEntry *entry, gpointer user_data){
 
   char *new = g_strconcat(old, "\n", buf, NULL);
   gtk_label_set_text(GTK_LABEL(chat_label), new);
-  g_free(new);
   gtk_editable_set_text(GTK_EDITABLE(entry), "");
 }
 
