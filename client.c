@@ -1,22 +1,24 @@
 #include <gtk/gtk.h>
+#include <glib-unix.h>
 #include "networkstructure.h"
 
 static int server_socket = -1;
 static GtkWidget *chat_label = NULL;
 
-static gboolean on_server_readable(GIOChannel *ch, GIOCondition cond, gpointer data) {
+static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
+  if (cond & (G_IO_HUP | G_IO_ERR)) return FALSE;
 
   char buf[1024];
-  int n = recv(server_socket, buf, sizeof(buf)-1, 0);
+  int n = recv(fd, buf, sizeof(buf)-1, 0);
   if (n <= 0) return FALSE;
   buf[n] = '\0';
 
   const char *old = gtk_label_get_text(GTK_LABEL(chat_label));
-  char *new = g_strconcat(old, "\n", buf, NULL);
-  gtk_label_set_text(GTK_LABEL(chat_label), new);
-  g_free(new);
+  char *newtxt = g_strconcat(old, "\n", buf, NULL);
+  gtk_label_set_text(GTK_LABEL(chat_label), newtxt);
+  g_free(newtxt);
 
-  return 1;
+  return TRUE;
 }
 
 static void clientLogic(GtkEntry *entry, gpointer user_data){
@@ -32,7 +34,7 @@ static void clientLogic(GtkEntry *entry, gpointer user_data){
 static void connectServer(char* IP){
   server_socket = client_tcp_handshake(IP);
   GIOChannel *ch = g_io_channel_unix_new(server_socket);
-  g_io_add_watch(ch, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
+  g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
 }
 
 static void
