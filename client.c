@@ -10,17 +10,21 @@
     if (cond & (G_IO_HUP | G_IO_ERR)) return FALSE;
 
     char buf[1024];
-    int n = recv(fd, buf, sizeof(buf)-1, 0);
-    if (n <= 0) return FALSE;
-    buf[n] = '\0';
+    int n;
 
-    GtkTextIter end;
-    gtk_text_buffer_get_end_iter(chat_buffer, &end);
-    gtk_text_buffer_insert(chat_buffer, &end, buf, -1);
-    gtk_text_buffer_insert(chat_buffer, &end, "\n", -1);
+    while ((n = recv(fd, buf, sizeof(buf)-1, MSG_DONTWAIT)) > 0) {
+      buf[n] = '\0';
 
-    return TRUE;
+      GtkTextIter end;
+      gtk_text_buffer_get_end_iter(chat_buffer, &end);
+      gtk_text_buffer_insert(chat_buffer, &end, buf, -1);
+      gtk_text_buffer_insert(chat_buffer, &end, "\n", -1);
+    }
+
+    return 1;
   }
+
+
 
   static void clientLogic(GtkEntry *entry, gpointer user_data){
     user_data = NULL;
@@ -29,11 +33,13 @@
       return;
     }
     send(server_socket, text, strlen(text), 0);
+    send(server_socket, "\n", 1, 0);
     gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
 
   static void connectServer(char* IP){
     server_socket = client_tcp_handshake(IP);
+    fcntl(server_socket, F_SETFL, O_NONBLOCK);
     GIOChannel *ch = g_io_channel_unix_new(server_socket);
     g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
   }
@@ -74,7 +80,7 @@
   {
     GtkApplication *app;
     int status;
-    app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_DEFAULT_FLAGS);
+    app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_NON_UNIQUE);
     g_set_prgname("c_chat");
     g_signal_connect (app, "activate", G_CALLBACK (activate), NULL);
     status = g_application_run (G_APPLICATION (app), argc, argv);
