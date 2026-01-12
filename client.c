@@ -4,6 +4,21 @@
 static int server_socket = -1;
 static GtkWidget *chat_label = NULL;
 
+static gboolean on_server_readable(GIOChannel *ch, GIOCondition cond, gpointer data) {
+
+  char buf[1024];
+  int n = recv(server_socket, buf, sizeof(buf)-1, 0);
+  if (n <= 0) return FALSE;
+  buf[n] = '\0';
+
+  const char *old = gtk_label_get_text(GTK_LABEL(chat_label));
+  char *new = g_strconcat(old, "\n", buf, NULL);
+  gtk_label_set_text(GTK_LABEL(chat_label), new);
+  g_free(new);
+
+  return 1;
+}
+
 static void clientLogic(GtkEntry *entry, gpointer user_data){
   user_data = NULL;
   const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
@@ -11,24 +26,13 @@ static void clientLogic(GtkEntry *entry, gpointer user_data){
     return; 
   }
   send(server_socket, text, strlen(text), 0);
-  char buf[1024];
-  int n = recv(server_socket, buf, sizeof(buf)-1, 0);
-  if (n<=0) {
-    close(server_socket);
-    printf("Client closed\n");
-    exit(0);
-  }
-  buf[n] = '\0';
-
-  const char *old = gtk_label_get_text(GTK_LABEL(chat_label));
-
-  char *new = g_strconcat(old, "\n", buf, NULL);
-  gtk_label_set_text(GTK_LABEL(chat_label), new);
   gtk_editable_set_text(GTK_EDITABLE(entry), "");
 }
 
 static void connectServer(char* IP){
   server_socket = client_tcp_handshake(IP);
+  GIOChannel *ch = g_io_channel_unix_new(server_socket);
+  g_io_add_watch(ch, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
 }
 
 static void
