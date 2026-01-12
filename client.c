@@ -48,7 +48,7 @@ activate (GtkApplication *app,
   window = gtk_application_window_new (app);
   box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
   gtk_window_set_child(GTK_WINDOW(window), box);
-  GtkWidget *label = gtk_label_new("Messages will appear here");
+  GtkWidget *label = gtk_label_new("");
   chat_label = label;
   gtk_label_set_xalign(GTK_LABEL(label), 0.0);
   gtk_box_append(GTK_BOX(box), label);

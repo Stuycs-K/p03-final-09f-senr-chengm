@@ -33,3 +33,8 @@ This document must be updated daily every time you finish a work session.
 - Researched and worked on the activate function, which should bind to the textbox and send the message on enter
 - still cant test on school computer
 - cleaned up files
+
+### 2026-01-12 - GTK Done-ish
+- Overhauled the connect code for the client to use all the weird GTK functions
+- Fixed the client logic for updating the chat stream
+- UI renders on linux, doesn't hang but is ugly
