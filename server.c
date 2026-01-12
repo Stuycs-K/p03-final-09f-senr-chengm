@@ -2,19 +2,19 @@
 
 
 
-// void subserver_logic(int client_socket){
-//   char buf[1024];
-//   while(1) {
-//     int n = recv(client_socket, buf, sizeof(buf)-1, 0);
-//     if (n <= 0) {
-//       close(client_socket);
-//       printf("Socket closed\n");
-//       exit(0);
-//     }
-//     buf[n] = '\0';
-//     send(client_socket, buf, n, 0);
-//   }
-// }
+void subserver_logic(int client_socket){
+  char buf[1024];
+  while(1) {
+    int n = recv(client_socket, buf, sizeof(buf)-1, 0);
+    if (n <= 0) {
+      close(client_socket);
+      printf("Socket closed\n");
+      exit(0);
+    }
+    buf[n] = '\0';
+    send(client_socket, buf, n, 0);
+  }
+}
 
 int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
