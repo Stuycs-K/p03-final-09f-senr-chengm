@@ -42,7 +42,14 @@ int main(int argc, char *argv[] ) {
 
     //select Code
     select(max_fd + 1, &read_fds, NULL, NULL, NULL);
-    int client_socket = server_tcp_handshake(listen_socket);
+
+    if(FD_ISSET(listen_socket, &read_fds)){
+      int client_socket = server_tcp_handshake(listen_socket);
+      client_count++;
+      clients[client_count] = client;
+      printf("Client connected \n");
+    }
+
     // pid_t f = fork();
     // if (f == 0) {
     //   char buf[1024];

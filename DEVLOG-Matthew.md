@@ -35,3 +35,4 @@ This document must be updated daily every time you finish a work session.
 -Tried adjust server code to not use forking
 -Adjusted select code and added client tracking code in server
 -Finished adding new server code
+-Add client connection code in server
