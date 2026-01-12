@@ -41,13 +41,35 @@ int main(int argc, char *argv[] ) {
     }
 
     //select Code
-    select(max_fd + 1, &read_fds, NULL, NULL, NULL);
+    select(fd_max + 1, &read_fds, NULL, NULL, NULL);
 
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
-      client_count++;
       clients[client_count] = client;
+      client_count++;
       printf("Client connected \n");
+    }
+
+    for(int i = 0; i < client_count; i++){
+      if(FD_ISSET(clients[i], &read_fds)){
+        int n = recv(clients[i], buff, sizeof(buff)-1,0);
+
+        if(n <= 0){
+          close(clients[i]);
+          client_count--;
+          clients[i] = clients[client_count];
+          i--;
+          printf("Client disconnected\n");
+          continue;
+        }
+        n++;
+        buff[n] = '\n';
+
+        //send code
+        for(int j = 0; j < client_count; j++){
+          send(clients[j], buff, n, 0);
+        }
+      }
     }
 
     // pid_t f = fork();
