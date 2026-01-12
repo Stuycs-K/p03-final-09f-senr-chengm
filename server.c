@@ -18,16 +18,20 @@
 
 int main(int argc, char *argv[] ) {
   int listen_socket = server_setup();
-  fd_set read_fds, cons;
-  FD_ZERO(&cons);
-  //add listen_socket and stdin to the set
-  FD_SET(listen_socket, &cons);
-  int fd_max = listen_socket;
+
+  int clients[100];
+  int client_count = 0;
+
+  fd_set read_fds;
 
   char buff[1024];
-  //listen socket is larger than STDIN_FILENO, so listen_socket+1 is the 1 larger than max fd value.
+
 
   while(1) {
+    FD_ZERO(&read_fds);
+    //add listen_socket and stdin to the set
+    FD_SET(listen_socket, &read_fds);
+    int fd_max = listen_socket;
     int client_socket = server_tcp_handshake(listen_socket);
     pid_t f = fork();
     if (f == 0) {
