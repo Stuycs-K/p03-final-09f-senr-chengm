@@ -36,7 +36,6 @@
       return;
     }
     send(server_socket, text, strlen(text), 0);
-    send(server_socket, "\n", 1, 0);
     gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
 
@@ -76,7 +75,6 @@
     buffer = gtk_entry_buffer_new(NULL, -1);
     message = gtk_entry_new_with_buffer(buffer);
     gtk_entry_set_placeholder_text(GTK_ENTRY(message), "Type a message...");
-    gtk_widget_set_halign(message, GTK_ALIGN_END);
     gtk_widget_set_valign(message, GTK_ALIGN_END);
     gtk_box_append(GTK_BOX(box), message);
     g_signal_connect (message, "activate", G_CALLBACK (clientLogic), NULL);
