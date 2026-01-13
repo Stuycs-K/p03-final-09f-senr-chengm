@@ -13,7 +13,7 @@ int main(int argc, char *argv[] ) {
 
 
   while(1) {
-    newC = 0;
+    int newC = 0;
     FD_ZERO(&read_fds);
     //add listen_socket and stdin to the set
     FD_SET(listen_socket, &read_fds);
