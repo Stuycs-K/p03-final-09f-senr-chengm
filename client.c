@@ -68,7 +68,7 @@
     gtk_widget_set_vexpand(scroller, TRUE);
     gtk_widget_set_hexpand(scroller, TRUE);
     gtk_box_append(GTK_BOX(box), scroller);
-    char* IP = "149.89.63.255";
+    char* IP = "149.89.40.122";
     connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
     gtk_window_set_default_size (GTK_WINDOW (window), 400, 600);
