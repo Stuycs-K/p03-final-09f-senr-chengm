@@ -38,3 +38,10 @@ This document must be updated daily every time you finish a work session.
 - Overhauled the connect code for the client to use all the weird GTK functions
 - Fixed the client logic for updating the chat stream
 - UI renders on linux, doesn't hang but is ugly
+
+### 2026-01-13 (3am) - Working
+- Can send and recieve messages between active clients in one big group chat.
+
+### 2026-01-13 - Researching
+- Figuring out how to do scrolling in the window.
+- Works on school computers now.
