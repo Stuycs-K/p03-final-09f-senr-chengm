@@ -6,7 +6,7 @@ networkstructure.o: networkstructure.c networkstructure.h
 	@gcc -c networkstructure.c
 client.o: client.c networkstructure.h
 	@gcc $(shell pkg-config --cflags gtk4) -c client.c $(shell pkg-config --libs gtk4)
-server.o: server.c networkstructure.h shared.h
+server.o: server.c networkstructure.h
 	@gcc -c server.c
 clean:
 	@rm *.o client server
