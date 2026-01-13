@@ -59,7 +59,12 @@
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
     chat_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-    gtk_box_append(GTK_BOX(box), view);
+    GtkWidget *scroller = gtk_scrolled_window_new();
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroller), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroller), view);
+    gtk_widget_set_vexpand(scroller, TRUE);
+    gtk_widget_set_hexpand(scroller, TRUE);
+    gtk_box_append(GTK_BOX(box), scroller);
     char* IP = "127.0.0.1";
     connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
