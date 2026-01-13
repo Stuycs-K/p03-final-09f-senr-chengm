@@ -4,6 +4,7 @@
 
   static int server_socket = -1;
   static GtkTextBuffer *chat_buffer = NULL;
+  static GtkWidget *chat_scroller = NULL;
 
 
   static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
@@ -19,6 +20,8 @@
       gtk_text_buffer_get_end_iter(chat_buffer, &end);
       gtk_text_buffer_insert(chat_buffer, &end, buf, -1);
       gtk_text_buffer_insert(chat_buffer, &end, "\n", -1);
+      GtkAdjustment *vadj = gtk_scrolled_window_get_vadjustment(GTK_SCROLLED_WINDOW(chat_scroller));
+      gtk_adjustment_set_value(vadj, gtk_adjustment_get_upper(vadj));
     }
 
     return 1;
@@ -59,7 +62,13 @@
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
     chat_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));
-    gtk_box_append(GTK_BOX(box), view);
+    GtkWidget *scroller = gtk_scrolled_window_new();
+    chat_scroller = scroller;
+    gtk_scrolled_window_set_policy(GTK_SCROLLED_WINDOW(scroller), GTK_POLICY_AUTOMATIC, GTK_POLICY_AUTOMATIC);
+    gtk_scrolled_window_set_child(GTK_SCROLLED_WINDOW(scroller), view);
+    gtk_widget_set_vexpand(scroller, TRUE);
+    gtk_widget_set_hexpand(scroller, TRUE);
+    gtk_box_append(GTK_BOX(box), scroller);
     char* IP = "127.0.0.1";
     connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
