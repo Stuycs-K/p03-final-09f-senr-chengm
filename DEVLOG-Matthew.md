@@ -36,3 +36,8 @@ This document must be updated daily every time you finish a work session.
 -Adjusted select code and added client tracking code in server
 -Finished adding new server code
 -Add client connection code in server
+
+### 2026-01-12 - Adding onto MVP, added notification when new client joins
+-Added server code that notifies online clients when a new client joins the group chat.
+-Added server code that notifies online clients when a client leaves / disconnects from the group chat.
+-Notifies online clients how many online clients there are / remain.
