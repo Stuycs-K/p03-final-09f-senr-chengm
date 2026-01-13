@@ -9,9 +9,11 @@ int main(int argc, char *argv[] ) {
   fd_set read_fds;
 
   char buff[1024];
+  char buff2[1024];
 
 
   while(1) {
+    newC = 0;
     FD_ZERO(&read_fds);
     //add listen_socket and stdin to the set
     FD_SET(listen_socket, &read_fds);
@@ -32,6 +34,8 @@ int main(int argc, char *argv[] ) {
       clients[client_count] = client_socket;
       client_count++;
       printf("Client connected \n");
+      newC = 1;
+      strcpy(buff2, "Client Connected\n");
     }
 
     for(int i = 0; i < client_count; i++){
@@ -50,6 +54,9 @@ int main(int argc, char *argv[] ) {
 
         //send code
         for(int j = 0; j < client_count; j++){
+          if(newC == 1){
+            send(clients[j], buff2, strlen(buff2),0 );
+          }
           send(clients[j], buff, n, 0);
         }
       }
