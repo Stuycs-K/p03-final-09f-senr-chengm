@@ -34,7 +34,8 @@ int main(int argc, char *argv[] ) {
       client_count++;
       printf("Client connected \n");
 
-      char msg[1024] = "A new client has connected\n";
+      char msg[1024];
+      sprintf(msg,"A new client has connected, %d clients online.\n", client_count);
       for(int j = 0; j < client_count - 1; j++){
         send(clients[j], msg, strlen(msg), 0);
       }
