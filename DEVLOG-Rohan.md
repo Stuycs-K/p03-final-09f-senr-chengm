@@ -45,3 +45,9 @@ This document must be updated daily every time you finish a work session.
 ### 2026-01-13 - Researching
 - Figuring out how to do scrolling in the window.
 - Works on school computers now.
+
+### 2026-01-13 HW - Visual Improvements
+- The window sized is now fixed, with a scroll view for the content
+- Scrolling automatically moves to the bottom with each new message, like a real messenger app
+- fixed makefile issue
+- UI mostly there, awaiting username functionality
