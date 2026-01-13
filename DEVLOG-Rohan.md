@@ -34,20 +34,23 @@ This document must be updated daily every time you finish a work session.
 - still cant test on school computer
 - cleaned up files
 
-### 2026-01-12 - GTK Done-ish
+### 2026-01-11 - GTK Done-ish
 - Overhauled the connect code for the client to use all the weird GTK functions
 - Fixed the client logic for updating the chat stream
 - UI renders on linux, doesn't hang but is ugly
 
-### 2026-01-13 (3am) - Working
+### 2026-01-12 (3am) - Working
 - Can send and recieve messages between active clients in one big group chat.
 
-### 2026-01-13 - Researching
+### 2026-01-12 - Researching
 - Figuring out how to do scrolling in the window.
 - Works on school computers now.
 
-### 2026-01-13 HW - Visual Improvements
+### 2026-01-12 HW - Visual Improvements
 - The window sized is now fixed, with a scroll view for the content
 - Scrolling automatically moves to the bottom with each new message, like a real messenger app
 - fixed makefile issue
 - UI mostly there, awaiting username functionality
+
+### 2026-01-13 - debug
+- multi computer connection works now
