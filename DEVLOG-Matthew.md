@@ -41,3 +41,7 @@ This document must be updated daily every time you finish a work session.
 -Added server code that notifies online clients when a new client joins the group chat.
 -Added server code that notifies online clients when a client leaves / disconnects from the group chat.
 -Notifies online clients how many online clients there are / remain.
+
+### 2026-01-13 - More add on to MVP, allowing different computer communication, store usernames
+-Edited networking getaddrinfo to be able to chat with clients from other computers
+-Added client username question when new client connects to server.
