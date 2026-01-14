@@ -51,10 +51,11 @@
       server_socket = -1;
     }
     server_socket = client_tcp_handshake(IP);
+    g_source_attach(server_socket, NULL);
     fcntl(server_socket, F_SETFL, O_NONBLOCK);
     GIOChannel *ch = g_io_channel_unix_new(server_socket);
     g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
-  }-
+  }
 
   static void change_ip(GtkEntry *entry, gpointer user_data){
     user_data = NULL;
