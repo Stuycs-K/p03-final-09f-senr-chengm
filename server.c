@@ -35,7 +35,7 @@ int main(int argc, char *argv[] ) {
       printf("Client connected \n");
       char msg[1024];
 
-      recv(clients[j],buff3, sizeof(buff3), 0);
+      recv(clients[client_count-1],buff3, sizeof(buff3), 0);
       sprintf(msg,"User: %s has connected, %d clients online.\n", buff3, client_count);
       for(int j = 0; j < client_count - 1; j++){
         send(clients[j], msg, strlen(msg), 0);
