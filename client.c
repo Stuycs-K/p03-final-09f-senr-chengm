@@ -95,10 +95,11 @@
     gtk_entry_set_placeholder_text(GTK_ENTRY(message), "Type a message...");
     gtk_widget_set_valign(message, GTK_ALIGN_END);
     gtk_box_append(GTK_BOX(box), message);
+    g_signal_connect (message_ip, "activate", G_CALLBACK (change_ip), NULL);
     buffer_ip = gtk_entry_buffer_new(NULL, -1);
     message_ip = gtk_entry_new_with_buffer(buffer_ip);
     gtk_entry_set_placeholder_text(GTK_ENTRY(message_ip), "Enter server IP");
-    gtk_widget_set_valign(message_ip, GTK_ALIGN_END);
+    gtk_widget_set_valign(message_ip, GTK_ALIGN_START);
     gtk_box_append(GTK_BOX(box), message_ip);
     g_signal_connect (message_ip, "activate", G_CALLBACK (change_ip), NULL);
     gtk_window_present (GTK_WINDOW (window));
