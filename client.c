@@ -41,26 +41,31 @@
     gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
 
-  static void change_ip(GtkEntry *entry, gpointer user_data){
-    user_data = NULL;
-    const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
-    if (!text || !*text) {
-      return;
-    }
-    connectServer(user_data);
-    gtk_editable_set_text(GTK_EDITABLE(entry), "");
-  }
-
   static void connectServer(char* IP){
     if (server_socket != -1) {
       close(server_socket);
+      server_socket = -1;
+    }
+    if (server_socket > 0) {
+      g_source_remove(server_socket);
       server_socket = -1;
     }
     server_socket = client_tcp_handshake(IP);
     fcntl(server_socket, F_SETFL, O_NONBLOCK);
     GIOChannel *ch = g_io_channel_unix_new(server_socket);
     g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
+  }-
+
+  static void change_ip(GtkEntry *entry, gpointer user_data){
+    user_data = NULL;
+    const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
+    if (!text || !*text) {
+      return;
+    }
+    connectServer(text);
+    gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
+
 
   static void
   activate (GtkApplication *app,
@@ -95,7 +100,7 @@
     gtk_entry_set_placeholder_text(GTK_ENTRY(message), "Type a message...");
     gtk_widget_set_valign(message, GTK_ALIGN_END);
     gtk_box_append(GTK_BOX(box), message);
-    g_signal_connect (message_ip, "activate", G_CALLBACK (change_ip), NULL);
+    g_signal_connect (message, "activate", G_CALLBACK (clientLogic), NULL);
     buffer_ip = gtk_entry_buffer_new(NULL, -1);
     message_ip = gtk_entry_new_with_buffer(buffer_ip);
     gtk_entry_set_placeholder_text(GTK_ENTRY(message_ip), "Enter server IP");
