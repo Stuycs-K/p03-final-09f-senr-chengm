@@ -9,6 +9,7 @@ int main(int argc, char *argv[] ) {
   fd_set read_fds;
 
   char buff[1024];
+  char buff2[1024];
 
 
   while(1) {
@@ -32,6 +33,12 @@ int main(int argc, char *argv[] ) {
       clients[client_count] = client_socket;
       client_count++;
       printf("Client connected \n");
+
+      char msg[1024];
+      sprintf(msg,"A new client has connected, %d clients online.\n", client_count);
+      for(int j = 0; j < client_count - 1; j++){
+        send(clients[j], msg, strlen(msg), 0);
+      }
     }
 
     for(int i = 0; i < client_count; i++){
@@ -40,9 +47,17 @@ int main(int argc, char *argv[] ) {
 
         if(n <= 0){
           close(clients[i]);
+
+
           client_count--;
           clients[i] = clients[client_count];
           i--;
+
+          char leave_msg[1024];
+          sprintf(leave_msg,"A client has disconnected, %d clients still online.\n", client_count);
+          for(int j = 0; j < client_count; j++){
+            send(clients[j], leave_msg, strlen(leave_msg), 0);
+          }
           printf("Client disconnected\n");
           continue;
         }

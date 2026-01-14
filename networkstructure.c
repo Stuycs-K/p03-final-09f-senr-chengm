@@ -12,7 +12,7 @@ int server_setup() {
   hints->ai_family = AF_INET;
   hints->ai_socktype = SOCK_STREAM; //TCP socket
   hints->ai_flags = AI_PASSIVE; //only needed on server
-  getaddrinfo(NULL, "6767", hints, &results);  //Server sets node to NULL
+  getaddrinfo("149.89.40.122", "67676", hints, &results);  //Server sets node to NULL
   //create the socket
   int clientd;//store the socket descriptor here
   clientd = socket(results->ai_family, results->ai_socktype, results->ai_protocol);
@@ -60,7 +60,7 @@ int client_tcp_handshake(char * server_address) {
   hints = calloc(1,sizeof(struct addrinfo));
   hints->ai_family = AF_INET;
   hints->ai_socktype = SOCK_STREAM; //TCP socket
-  getaddrinfo(server_address, "6767", hints, &results);  //Server sets node to NULL
+  getaddrinfo(server_address, "67676", hints, &results);  //Server sets node to NULL
   int serverd;//store the socket descriptor here
   serverd = socket(results->ai_family, results->ai_socktype, results->ai_protocol);
   //connect() to the server

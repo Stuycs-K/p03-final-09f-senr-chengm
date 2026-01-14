@@ -36,7 +36,6 @@
       return;
     }
     send(server_socket, text, strlen(text), 0);
-    send(server_socket, "\n", 1, 0);
     gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
 
@@ -69,14 +68,13 @@
     gtk_widget_set_vexpand(scroller, TRUE);
     gtk_widget_set_hexpand(scroller, TRUE);
     gtk_box_append(GTK_BOX(box), scroller);
-    char* IP = "127.0.0.1";
+    char* IP = "149.89.40.122";
     connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
     gtk_window_set_default_size (GTK_WINDOW (window), 400, 600);
     buffer = gtk_entry_buffer_new(NULL, -1);
     message = gtk_entry_new_with_buffer(buffer);
     gtk_entry_set_placeholder_text(GTK_ENTRY(message), "Type a message...");
-    gtk_widget_set_halign(message, GTK_ALIGN_END);
     gtk_widget_set_valign(message, GTK_ALIGN_END);
     gtk_box_append(GTK_BOX(box), message);
     g_signal_connect (message, "activate", G_CALLBACK (clientLogic), NULL);
