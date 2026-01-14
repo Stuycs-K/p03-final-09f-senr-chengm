@@ -65,7 +65,9 @@
     GtkWidget *window;
     GtkWidget *box;
     GtkWidget *message;
+    GtkWidget *message_ip;
     GtkEntryBuffer *buffer;
+    GtkEntryBuffer *buffer_ip;
     window = gtk_application_window_new (app);
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_window_set_child(GTK_WINDOW(window), box);
@@ -80,7 +82,7 @@
     gtk_widget_set_vexpand(scroller, TRUE);
     gtk_widget_set_hexpand(scroller, TRUE);
     gtk_box_append(GTK_BOX(box), scroller);
-    char* IP = "149.89.40.122";
+    char* IP = "127.0.0.1";
     connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
     gtk_window_set_default_size (GTK_WINDOW (window), 400, 600);
@@ -89,7 +91,12 @@
     gtk_entry_set_placeholder_text(GTK_ENTRY(message), "Type a message...");
     gtk_widget_set_valign(message, GTK_ALIGN_END);
     gtk_box_append(GTK_BOX(box), message);
-    g_signal_connect (message, "activate", G_CALLBACK (clientLogic), NULL);
+    buffer_ip = gtk_entry_buffer_new(NULL, -1);
+    message_ip = gtk_entry_new_with_buffer(buffer_ip);
+    gtk_entry_set_placeholder_text(GTK_ENTRY(message_ip), "Enter server IP");
+    gtk_widget_set_valign(message_ip, GTK_ALIGN_END);
+    gtk_box_append(GTK_BOX(box), message_ip);
+    g_signal_connect (message_ip, "activate", G_CALLBACK (change_ip), NULL);
     gtk_window_present (GTK_WINDOW (window));
   }
 
