@@ -39,6 +39,18 @@
     gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
 
+  static void change_ip(GtkEntry *entry, gpointer user_data){
+    close(server_setup);
+    user_data = NULL;
+    const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
+    if (!text || !*text) {
+      return;
+    }
+    connectServer(user_data);
+    send(server_socket, text, strlen(text), 0);
+    gtk_editable_set_text(GTK_EDITABLE(entry), "");
+  }
+
   static void connectServer(char* IP){
     server_socket = client_tcp_handshake(IP);
     fcntl(server_socket, F_SETFL, O_NONBLOCK);
