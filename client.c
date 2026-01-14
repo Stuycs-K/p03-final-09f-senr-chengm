@@ -5,7 +5,7 @@
   static int server_socket = -1;
   static GtkTextBuffer *chat_buffer = NULL;
   static GtkWidget *chat_scroller = NULL;
-
+  static char user[128];
 
   static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
     if (cond & (G_IO_HUP | G_IO_ERR)) return FALSE;
@@ -30,6 +30,9 @@
 
 
   static void clientLogic(GtkEntry *entry, gpointer user_data){
+    char msg[1024];
+    sprintf(msg,sizeof(msg), "%s", user);
+    send(server_socket,msg,strlen(msg),0);
     user_data = NULL;
     const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
     if (!text || !*text) {
@@ -85,7 +88,7 @@
   main (int    argc,
         char **argv)
   {
-    static char user[128];
+
     printf("Enter username: ");
 
     fgets(user,sizeof(user),stdin);
@@ -94,7 +97,7 @@
     }
     user[strcspn(user,"\n")] = 0;
 
-    
+
     GtkApplication *app;
     int status;
     app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_NON_UNIQUE);

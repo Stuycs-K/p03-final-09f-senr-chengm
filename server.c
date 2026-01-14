@@ -27,15 +27,16 @@ int main(int argc, char *argv[] ) {
 
     //select Code
     select(fd_max + 1, &read_fds, NULL, NULL, NULL);
-
+    char buff3[1024];
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
       clients[client_count] = client_socket;
       client_count++;
       printf("Client connected \n");
-
       char msg[1024];
-      sprintf(msg,"A new client has connected, %d clients online.\n", client_count);
+
+      recv(clients[j],buff3, sizeof(buff3), 0);
+      sprintf(msg,"User: %s has connected, %d clients online.\n", buff3, client_count);
       for(int j = 0; j < client_count - 1; j++){
         send(clients[j], msg, strlen(msg), 0);
       }
@@ -54,7 +55,7 @@ int main(int argc, char *argv[] ) {
           i--;
 
           char leave_msg[1024];
-          sprintf(leave_msg,"A client has disconnected, %d clients still online.\n", client_count);
+          sprintf(leave_msg,"%s has disconnected, %d clients still online.\n", buff3, client_count);
           for(int j = 0; j < client_count; j++){
             send(clients[j], leave_msg, strlen(leave_msg), 0);
           }
