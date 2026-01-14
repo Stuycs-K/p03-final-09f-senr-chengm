@@ -85,6 +85,16 @@
   main (int    argc,
         char **argv)
   {
+    static char user[128];
+    printf("Enter username: ");
+
+    fgets(user,sizeof(user),stdin);
+    if(user == NULL){
+      strcpy(user,"anonymous");
+    }
+    user[strcspn(user,"\n")] = 0;
+
+    
     GtkApplication *app;
     int status;
     app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_NON_UNIQUE);
