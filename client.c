@@ -31,7 +31,7 @@
 
   static void clientLogic(GtkEntry *entry, gpointer user_data){
     char msg[1024];
-    sprintf(msg,sizeof(msg), "%s", user);
+    snprintf(msg,sizeof(msg), "%s", user);
     send(server_socket,msg,strlen(msg),0);
     user_data = NULL;
     const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
@@ -91,10 +91,10 @@
 
     printf("Enter username: ");
 
-    fgets(user,sizeof(user),stdin);
-    if(user == NULL){
+    if(fgets(user,sizeof(user),stdin) == NULL){
       strcpy(user,"anonymous");
     }
+
     user[strcspn(user,"\n")] = 0;
 
 

@@ -27,7 +27,7 @@ int main(int argc, char *argv[] ) {
 
     //select Code
     select(fd_max + 1, &read_fds, NULL, NULL, NULL);
-    char buff3[1024];
+    char buff3[100][64];
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
       clients[client_count] = client_socket;
@@ -35,8 +35,12 @@ int main(int argc, char *argv[] ) {
       printf("Client connected \n");
       char msg[1024];
 
-      recv(clients[client_count-1],buff3, sizeof(buff3), 0);
-      sprintf(msg,"User: %s has connected, %d clients online.\n", buff3, client_count);
+      int n = recv(clients[client_count-1],buff3[client_count - 1], sizeof(buff3[0]), 0);
+      buff3[client_count-1][63] = 0;
+      if(n>0){
+        buff3[n][63] = '\0';
+      }
+      snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", buff3[client_count-1], client_count);
       for(int j = 0; j < client_count - 1; j++){
         send(clients[j], msg, strlen(msg), 0);
       }
@@ -55,7 +59,7 @@ int main(int argc, char *argv[] ) {
           i--;
 
           char leave_msg[1024];
-          sprintf(leave_msg,"%s has disconnected, %d clients still online.\n", buff3, client_count);
+          snprintf(leave_msg, sizeof(leave_msg),"%s has disconnected, %d clients still online.\n", buff3[i], client_count);
           for(int j = 0; j < client_count; j++){
             send(clients[j], leave_msg, strlen(leave_msg), 0);
           }
