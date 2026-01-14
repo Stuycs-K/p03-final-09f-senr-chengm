@@ -54,3 +54,6 @@ This document must be updated daily every time you finish a work session.
 
 ### 2026-01-13 - debug
 - multi computer connection works now
+
+### 2026-01-13 HW - UI
+- allow the user to change servers through a text box

@@ -5,6 +5,8 @@
   static int server_socket = -1;
   static GtkTextBuffer *chat_buffer = NULL;
   static GtkWidget *chat_scroller = NULL;
+  static guint server_source_id = 0;
+  static GtkWidget *chat_view = NULL;
 
 
   static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
@@ -40,18 +42,20 @@
   }
 
   static void change_ip(GtkEntry *entry, gpointer user_data){
-    close(server_setup);
     user_data = NULL;
     const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
     if (!text || !*text) {
       return;
     }
     connectServer(user_data);
-    send(server_socket, text, strlen(text), 0);
     gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
 
   static void connectServer(char* IP){
+    if (server_socket != -1) {
+      close(server_socket);
+      server_socket = -1;
+    }
     server_socket = client_tcp_handshake(IP);
     fcntl(server_socket, F_SETFL, O_NONBLOCK);
     GIOChannel *ch = g_io_channel_unix_new(server_socket);
