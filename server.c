@@ -34,13 +34,9 @@ int main(int argc, char *argv[] ) {
       client_count++;
       printf("Client connected \n");
       char msg[1024];
-
       int n = recv(clients[client_count-1],buff3[client_count - 1], sizeof(buff3[0]), 0);
-      buff3[client_count-1][63] = 0;
-      if(n>0){
-        buff3[n][63] = '\0';
-      }
-      snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", buff3[client_count-1], client_count);
+//       snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", buff3[client_count-1], client_count);
+      printf("%s has connected\n", buff3[client_count-1]);
       for(int j = 0; j < client_count - 1; j++){
         send(clients[j], msg, strlen(msg), 0);
       }
