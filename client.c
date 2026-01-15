@@ -5,6 +5,9 @@
   static int server_socket = -1;
   static GtkTextBuffer *chat_buffer = NULL;
   static GtkWidget *chat_scroller = NULL;
+  static guint server_source_id = 0;
+  static GtkWidget *chat_view = NULL;
+
   static char user[128];
 
   static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
@@ -40,12 +43,30 @@
   }
 
   static void connectServer(char* IP){
+    if (server_socket != -1) {
+      close(server_socket);
+      server_socket = -1;
+    }
+    if (server_source_id != -1) {
+      g_source_remove(server_source_id);
+      server_source_id = 0;
+    }
     server_socket = client_tcp_handshake(IP);
     fcntl(server_socket, F_SETFL, O_NONBLOCK);
     GIOChannel *ch = g_io_channel_unix_new(server_socket);
-    send(server_socket,user,strlen(user),0);
-    g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
+    server_source_id = g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
   }
+
+  static void change_ip(GtkEntry *entry, gpointer user_data){
+    user_data = NULL;
+    const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
+    if (!text || !*text) {
+      return;
+    }
+    connectServer(text);
+    send(server_socket,user,strlen(user),0);
+  }
+
 
   static void
   activate (GtkApplication *app,
@@ -54,11 +75,22 @@
     GtkWidget *window;
     GtkWidget *box;
     GtkWidget *message;
+    GtkWidget *message_ip;
     GtkEntryBuffer *buffer;
+    GtkEntryBuffer *buffer_ip;
+    char* IP = "127.0.0.1";
+    connectServer(IP);
     window = gtk_application_window_new (app);
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);
     gtk_window_set_child(GTK_WINDOW(window), box);
     GtkWidget *view = gtk_text_view_new();
+    buffer_ip = gtk_entry_buffer_new(NULL, -1);
+    message_ip = gtk_entry_new_with_buffer(buffer_ip);
+    gtk_entry_set_placeholder_text(GTK_ENTRY(message_ip), "Enter server IP");
+    gtk_editable_set_text(GTK_EDITABLE(entry), "127.0.0.1");
+    gtk_widget_set_valign(message_ip, GTK_ALIGN_START);
+    gtk_box_append(GTK_BOX(box), message_ip);
+    g_signal_connect (message_ip, "activate", G_CALLBACK (change_ip), NULL);
     gtk_text_view_set_editable(GTK_TEXT_VIEW(view), FALSE);
     gtk_text_view_set_cursor_visible(GTK_TEXT_VIEW(view), FALSE);
     chat_buffer = gtk_text_view_get_buffer(GTK_TEXT_VIEW(view));

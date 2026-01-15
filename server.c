@@ -1,8 +1,12 @@
 #include "networkstructure.h"
 
 int main(int argc, char *argv[] ) {
-  int listen_socket = server_setup();
-
+  int listen_socket;
+  if (argc > 1) {
+    listen_socket = server_setup(argv[1]);
+  } else {
+    listen_socket = server_setup(NULL);
+  }
   int clients[100];
   int client_count = 0;
 

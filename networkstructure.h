@@ -15,7 +15,7 @@
 #ifndef NETWORKSTRUCTURE_H
 #define NETWORKSTRUCTURE_H
 void err(int i, char*message);
-int server_setup();
+int server_setup(char*add);
 int client_tcp_handshake(char*server_address);
 int server_tcp_handshake(int listen_socket);
 void view();

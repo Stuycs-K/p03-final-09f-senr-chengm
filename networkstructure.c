@@ -4,7 +4,7 @@
 * Place the socket in a listening state.
 * returns the socket descriptor
 */
-int server_setup() {
+int server_setup(char* add) {
   //setup structs for getaddrinfo
   //use getaddrinfo
   struct addrinfo * hints, * results;//results is allocated in getaddrinfo
@@ -12,7 +12,8 @@ int server_setup() {
   hints->ai_family = AF_INET;
   hints->ai_socktype = SOCK_STREAM; //TCP socket
   hints->ai_flags = AI_PASSIVE; //only needed on server
-  getaddrinfo(NULL, "67676", hints, &results);  //Server sets node to NULL
+  if (add == NULL) getaddrinfo("127.0.0.1", "67676", hints, &results);
+  else getaddrinfo(add, "67676", hints, &results);  //Server sets node to NULL
   //create the socket
   int clientd;//store the socket descriptor here
   clientd = socket(results->ai_family, results->ai_socktype, results->ai_protocol);
