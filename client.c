@@ -65,8 +65,8 @@
     if (!text || !*text) {
       return;
     }
+    gtk_text_buffer_set_text(chat_buffer, "", 0);
     connectServer(text);
-    send(server_socket,user,strlen(user),0);
   }
 
 
