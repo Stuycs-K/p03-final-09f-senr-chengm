@@ -1,7 +1,7 @@
 #include "networkstructure.h"
 
 void save_to_file(char * msg) {
-  int f = open("msg.txt",O_APPEND | O_WRONLY, 0644);
+  int f = open("msg.txt",O_APPEND | O_WRONLY | O_CREAT, 0644);
   write(f, msg, strlen(msg));
   write(f, "\n", 1);
   close(f);
@@ -54,14 +54,9 @@ int main(int argc, char *argv[] ) {
       int client_socket = server_tcp_handshake(listen_socket);
       clients[client_count] = client_socket;
       client_count++;
-      
+
       printf("Client connected \n");
       send_chat(client_socket);
-      char msg[1024];
-      sprintf(msg,"A new client has connected, %d clients online.\n", client_count);
-      for(int j = 0; j < client_count - 1; j++){
-        send(clients[j], msg, strlen(msg), 0);
-      }
     }
 
     for(int i = 0; i < client_count; i++){
@@ -69,9 +64,12 @@ int main(int argc, char *argv[] ) {
         int n = recv(clients[i], buff, sizeof(buff)-1,0);
 
         if(n <= 0){
+          printf("Client disconnected \n");
           char leave_msg[1024];
           if(user[i]){
-            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count-1);
+            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count);
+            save_to_file(leave_msg);
+
           }
           else{
             snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.\n",client_count-1);
@@ -87,7 +85,6 @@ int main(int argc, char *argv[] ) {
           continue;
         }
         buff[n] = '\0';
-        save_to_file(buff);
 
         if(!user[i]){
           strncpy(usernames[i],buff,sizeof(usernames[i])-1);
@@ -96,6 +93,7 @@ int main(int argc, char *argv[] ) {
 
           char msg[1024];
           snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", usernames[i], client_count);
+          save_to_file(msg);
           for(int j = 0; j < client_count; j++){
             send(clients[j], msg, strlen(msg),0);
           }
@@ -106,6 +104,7 @@ int main(int argc, char *argv[] ) {
 
         char other[1024+129];
         snprintf(other,sizeof(other),"%s: %s", usernames[i], buff);
+        save_to_file(other);
         for(int j = 0; j < client_count; j++){
           send(clients[j], other,strlen(other), 0);
         }
