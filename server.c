@@ -1,5 +1,21 @@
 #include "networkstructure.h"
 
+void save_to_file(char * msg) {
+  int f = open("msg.txt",O_APPEND | O_WRONLY, 0644);
+  write(f, msg, strlen(msg));
+  write(f, "\n", 1);
+  close(f);
+}
+
+void send_chat(int socket) {
+  int f = open("msg.txt",O_RDONLY, 0644);
+  char buf[1024];
+  while ((read(f, buf, sizeof(buf)))>0) {
+    send(socket, buf, strlen(buf), 0);
+  }
+  close(f);
+}
+
 int main(int argc, char *argv[] ) {
   int listen_socket;
   if (argc > 1) {
@@ -38,7 +54,14 @@ int main(int argc, char *argv[] ) {
       int client_socket = server_tcp_handshake(listen_socket);
       clients[client_count] = client_socket;
       client_count++;
+      
       printf("Client connected \n");
+      send_chat(client_socket);
+      char msg[1024];
+      sprintf(msg,"A new client has connected, %d clients online.\n", client_count);
+      for(int j = 0; j < client_count - 1; j++){
+        send(clients[j], msg, strlen(msg), 0);
+      }
     }
 
     for(int i = 0; i < client_count; i++){
@@ -65,6 +88,7 @@ int main(int argc, char *argv[] ) {
           continue;
         }
         buff[n] = '\0';
+        save_to_file(buff);
 
         if(!user[i]){
           strncpy(usernames[i],buff,sizeof(usernames[i])-1);
