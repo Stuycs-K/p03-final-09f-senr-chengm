@@ -35,9 +35,6 @@ int main(int argc, char *argv[] ) {
       clients[client_count] = client_socket;
       client_count++;
       printf("Client connected \n");
-      for(int j = 0; j < client_count - 1; j++){
-        send(clients[j], msg, strlen(msg), 0);
-      }
     }
 
     for(int i = 0; i < client_count; i++){
@@ -46,7 +43,7 @@ int main(int argc, char *argv[] ) {
 
         if(n <= 0){
           char leave_msg[1024];
-          if(has_username[i]){
+          if(user[i]){
             snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count);
           }
           else{
@@ -55,34 +52,34 @@ int main(int argc, char *argv[] ) {
           client_count--;
           clients[i] = clients[client_count];
           strcpy(usernames[i], usernames[client_count]);
-          has_username[i] = has_username[client_count];
+          user[i] = user[client_count];
           i--;
           for(int j = 0; j < client_count; j++){
-            send(clients[j], leave_msg, strlen(leave_msg), 0):
+            send(clients[j], leave_msg, strlen(leave_msg), 0);
           }
           continue;
         }
         buff[n] = '\0';
 
-        if(!has_username[i]){
+        if(!user[i]){
           strncpy(usernames[i],buff,sizeof(usernames[i])-1);
-          usernames[i][sieof(usernames[i])-1] = '\0';
-          has_username[i] = 1;
+          usernames[i][sizeof(usernames[i])-1] = '\0';
+          user[i] = 1;
 
           char msg[1024];
           snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", usernames[i], client_count);
           for(int j = 0; j < client_count; j++){
-            send(clients[j], join_msg, strlen(join_msg),0);
+            send(clients[j], msg, strlen(msg),0);
           }
           continue;
         }
 
         //send code
 
-        char other[1024];
-        snprintf(out,sizeof(out),"%s: %s", usernames[i], buff);
+        char other[1024+129];
+        snprintf(other,sizeof(other),"%s: %s", usernames[i], buff);
         for(int j = 0; j < client_count; j++){
-          send(clients[j], out,strlen(out), 0);
+          send(clients[j], other,strlen(other), 0);
         }
       }
     }

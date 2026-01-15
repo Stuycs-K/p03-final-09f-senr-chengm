@@ -30,9 +30,6 @@
 
 
   static void clientLogic(GtkEntry *entry, gpointer user_data){
-    char msg[1024];
-    snprintf(msg,sizeof(msg), "%s", user);
-    send(server_socket,msg,strlen(msg),0);
     user_data = NULL;
     const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
     if (!text || !*text) {
@@ -46,6 +43,7 @@
     server_socket = client_tcp_handshake(IP);
     fcntl(server_socket, F_SETFL, O_NONBLOCK);
     GIOChannel *ch = g_io_channel_unix_new(server_socket);
+    send(server_socket,user,strlen(user),0);
     g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
   }
 
