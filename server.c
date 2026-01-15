@@ -67,7 +67,7 @@ int main(int argc, char *argv[] ) {
           printf("Client disconnected \n");
           char leave_msg[1024];
           if(user[i]){
-            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count);
+            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count-1);
             save_to_file(leave_msg);
 
           }
