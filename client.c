@@ -59,6 +59,7 @@
 
   static void change_ip(GtkEntry *entry, gpointer user_data){
     user_data = NULL;
+    send(server_socket, NULL, 0, 0);
     const char *text = gtk_editable_get_text(GTK_EDITABLE(entry));
     if (!text || !*text) {
       return;
@@ -87,7 +88,7 @@
     buffer_ip = gtk_entry_buffer_new(NULL, -1);
     message_ip = gtk_entry_new_with_buffer(buffer_ip);
     gtk_entry_set_placeholder_text(GTK_ENTRY(message_ip), "Enter server IP");
-    gtk_editable_set_text(GTK_EDITABLE(entry), "127.0.0.1");
+    gtk_editable_set_text(GTK_EDITABLE(message_ip), "127.0.0.1");
     gtk_widget_set_valign(message_ip, GTK_ALIGN_START);
     gtk_box_append(GTK_BOX(box), message_ip);
     g_signal_connect (message_ip, "activate", G_CALLBACK (change_ip), NULL);
@@ -101,8 +102,6 @@
     gtk_widget_set_vexpand(scroller, TRUE);
     gtk_widget_set_hexpand(scroller, TRUE);
     gtk_box_append(GTK_BOX(box), scroller);
-    char* IP = "127.0.0.1";
-    connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
     gtk_window_set_default_size (GTK_WINDOW (window), 400, 600);
     buffer = gtk_entry_buffer_new(NULL, -1);

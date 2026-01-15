@@ -46,6 +46,7 @@ int main(int argc, char *argv[] ) {
         int n = recv(clients[i], buff, sizeof(buff)-1,0);
 
         if(n <= 0){
+          printf("Client disconnected \n");
           char leave_msg[1024];
           if(user[i]){
             snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count);
