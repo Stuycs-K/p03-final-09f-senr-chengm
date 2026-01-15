@@ -44,10 +44,10 @@ int main(int argc, char *argv[] ) {
         if(n <= 0){
           char leave_msg[1024];
           if(user[i]){
-            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count);
+            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count-1);
           }
           else{
-            snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.\n",client_count);
+            snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.\n",client_count-1);
           }
           client_count--;
           clients[i] = clients[client_count];
