@@ -30,9 +30,11 @@ int main(int argc, char *argv[] ) {
 
   char buff[1024];
   char buff2[1024];
-
+  char usernames[100][128];
+  int user[100] = {0};
 
   while(1) {
+
     FD_ZERO(&read_fds);
     //add listen_socket and stdin to the set
     FD_SET(listen_socket, &read_fds);
@@ -67,26 +69,45 @@ int main(int argc, char *argv[] ) {
         int n = recv(clients[i], buff, sizeof(buff)-1,0);
 
         if(n <= 0){
-          close(clients[i]);
-
-
+          char leave_msg[1024];
+          if(user[i]){
+            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count);
+          }
+          else{
+            snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.\n",client_count);
+          }
           client_count--;
           clients[i] = clients[client_count];
+          strcpy(usernames[i], usernames[client_count]);
+          user[i] = user[client_count];
           i--;
-
-          char leave_msg[1024];
-          sprintf(leave_msg,"A client has disconnected, %d clients still online.\n", client_count);
           for(int j = 0; j < client_count; j++){
             send(clients[j], leave_msg, strlen(leave_msg), 0);
           }
-          printf("Client disconnected\n");
           continue;
         }
         buff[n] = '\0';
         save_to_file(buff);
+
+        if(!user[i]){
+          strncpy(usernames[i],buff,sizeof(usernames[i])-1);
+          usernames[i][sizeof(usernames[i])-1] = '\0';
+          user[i] = 1;
+
+          char msg[1024];
+          snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", usernames[i], client_count);
+          for(int j = 0; j < client_count; j++){
+            send(clients[j], msg, strlen(msg),0);
+          }
+          continue;
+        }
+
         //send code
+
+        char other[1024+129];
+        snprintf(other,sizeof(other),"%s: %s", usernames[i], buff);
         for(int j = 0; j < client_count; j++){
-          send(clients[j], buff, n, 0);
+          send(clients[j], other,strlen(other), 0);
         }
       }
     }

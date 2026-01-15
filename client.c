@@ -8,6 +8,7 @@
   static guint server_source_id = 0;
   static GtkWidget *chat_view = NULL;
 
+  static char user[128];
 
   static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
     if (cond & (G_IO_HUP | G_IO_ERR)) return FALSE;
@@ -63,6 +64,7 @@
       return;
     }
     connectServer(text);
+    send(server_socket,user,strlen(user),0);
   }
 
 
@@ -99,6 +101,8 @@
     gtk_widget_set_vexpand(scroller, TRUE);
     gtk_widget_set_hexpand(scroller, TRUE);
     gtk_box_append(GTK_BOX(box), scroller);
+    char* IP = "127.0.0.1";
+    connectServer(IP);
     gtk_window_set_title (GTK_WINDOW (window), "c_chat");
     gtk_window_set_default_size (GTK_WINDOW (window), 400, 600);
     buffer = gtk_entry_buffer_new(NULL, -1);
@@ -114,6 +118,16 @@
   main (int    argc,
         char **argv)
   {
+
+    printf("Enter username: ");
+
+    if(fgets(user,sizeof(user),stdin) == NULL){
+      strcpy(user,"anonymous");
+    }
+
+    user[strcspn(user,"\n")] = 0;
+
+
     GtkApplication *app;
     int status;
     app = gtk_application_new ("org.idk.c_chat", G_APPLICATION_NON_UNIQUE);
