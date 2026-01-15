@@ -57,3 +57,10 @@ This document must be updated daily every time you finish a work session.
 
 ### 2026-01-13 HW - UI
 - allow the user to change servers through a text box
+
+### 2026-01-14 - unsuccessful 
+- spent period attempting to fix the server switcher
+
+### 2026-01-14 HW - server switcher & file save 
+- I think the fix for the server switcher was really simple, will test tomorrow
+- added in the saving the chat to a file then sending it to whoever joins fresh to catch them up.
