@@ -10,7 +10,8 @@ int main(int argc, char *argv[] ) {
 
   char buff[1024];
   char buff2[1024];
-
+  char usernames[100][128];
+  int user[100] = {0};
 
   while(1) {
 
@@ -30,13 +31,11 @@ int main(int argc, char *argv[] ) {
     select(fd_max + 1, &read_fds, NULL, NULL, NULL);
 
     if(FD_ISSET(listen_socket, &read_fds)){
-      char buff3[1024];
       int client_socket = server_tcp_handshake(listen_socket);
       clients[client_count] = client_socket;
       client_count++;
       printf("Client connected \n");
       char msg[1024];
-//       recv(clients[client_count],buff3, sizeof(buff3), 0);
 //       snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", buff3[client_count-1], client_count);
       printf("%s has connected\n", buff3);
       for(int j = 0; j < client_count - 1; j++){
@@ -49,19 +48,21 @@ int main(int argc, char *argv[] ) {
         int n = recv(clients[i], buff, sizeof(buff)-1,0);
 
         if(n <= 0){
-          close(clients[i]);
-
-
+          char leave_msg[1024];
+          if(has_username[i]){
+            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count);
+          }
+          else{
+            snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.\n",client_count);
+          }
           client_count--;
           clients[i] = clients[client_count];
+          strcpy(usernames[i], usernames[client_count]);
+          has_username[i] = has_username[client_count];
           i--;
-
-          char leave_msg[1024];
-//           snprintf(leave_msg, sizeof(leave_msg),"%s has disconnected, %d clients still online.\n", buff3[i], client_count);
           for(int j = 0; j < client_count; j++){
-            send(clients[j], leave_msg, strlen(leave_msg), 0);
+            send(clients[j], leave_msg, strlen(leave_msg), 0):
           }
-          printf("Client disconnected\n");
           continue;
         }
         buff[n] = '\0';
