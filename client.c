@@ -55,6 +55,7 @@
     fcntl(server_socket, F_SETFL, O_NONBLOCK);
     GIOChannel *ch = g_io_channel_unix_new(server_socket);
     server_source_id = g_unix_fd_add(server_socket, G_IO_IN | G_IO_HUP | G_IO_ERR, on_server_readable, NULL);
+    send(server_socket, user, strlen(user), 0);
   }
 
   static void change_ip(GtkEntry *entry, gpointer user_data){
