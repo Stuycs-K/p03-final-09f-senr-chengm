@@ -35,9 +35,6 @@ int main(int argc, char *argv[] ) {
       clients[client_count] = client_socket;
       client_count++;
       printf("Client connected \n");
-      char msg[1024];
-//       snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", buff3[client_count-1], client_count);
-      printf("%s has connected\n", buff3);
       for(int j = 0; j < client_count - 1; j++){
         send(clients[j], msg, strlen(msg), 0);
       }
@@ -67,9 +64,25 @@ int main(int argc, char *argv[] ) {
         }
         buff[n] = '\0';
 
+        if(!has_username[i]){
+          strncpy(usernames[i],buff,sizeof(usernames[i])-1);
+          usernames[i][sieof(usernames[i])-1] = '\0';
+          has_username[i] = 1;
+
+          char msg[1024];
+          snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", usernames[i], client_count);
+          for(int j = 0; j < client_count; j++){
+            send(clients[j], join_msg, strlen(join_msg),0);
+          }
+          continue;
+        }
+
         //send code
+
+        char other[1024];
+        snprintf(out,sizeof(out),"%s: %s", usernames[i], buff);
         for(int j = 0; j < client_count; j++){
-          send(clients[j], buff, n, 0);
+          send(clients[j], out,strlen(out), 0);
         }
       }
     }
