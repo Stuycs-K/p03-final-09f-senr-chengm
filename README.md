@@ -7,7 +7,7 @@ Rohan Sen, Matthew Cheng
 
 ### Project Description:
 
-c_chat is a messaging app that allows users to connect to and message other active users.
+c_chat is a messaging app that allows users to connect to and message other active users. You are able to chat in a group with multiple other users, and you can switch between as many different groups as you feel.
 
 ### Instructions:
 
