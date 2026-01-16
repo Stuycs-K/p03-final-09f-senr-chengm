@@ -54,7 +54,7 @@ int server_tcp_handshake(int listen_socket){
 /*Connect to the server
  *return the to_server socket descriptor
  *blocks until connection is made.*/
-int client_tcp_handshake(char * server_address) {
+int client_tcp_handshake(const char * server_address) {
 
   //getaddrinfo
   struct addrinfo * hints, * results;//results is allocated in getaddrinfo

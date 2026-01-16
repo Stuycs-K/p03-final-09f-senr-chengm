@@ -50,3 +50,8 @@ This document must be updated daily every time you finish a work session.
 ### 2026-01-14 - Bugfixing username feature, Added working username feature when joining and sending messages
 -Move around server and client code to be able to receive and display usernames
 -Stored usernames in an array, display username of person who sent message when they send messages
+
+### 2026-01-15 - Bugfixing overall code, final touches
+-Edited readme to include correct and updated description
+-Edited ip address const issue
+-Final touches and bugfixes
