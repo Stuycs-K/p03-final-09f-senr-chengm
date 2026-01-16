@@ -42,7 +42,7 @@
     gtk_editable_set_text(GTK_EDITABLE(entry), "");
   }
 
-  static void connectServer(char* IP){
+  static void connectServer( const char* IP){
     if (server_socket != -1) {
       close(server_socket);
       server_socket = -1;
@@ -80,7 +80,7 @@
     GtkWidget *message_ip;
     GtkEntryBuffer *buffer;
     GtkEntryBuffer *buffer_ip;
-    char* IP = "127.0.0.1";
+    char IP[] = "127.0.0.1";
     connectServer(IP);
     window = gtk_application_window_new (app);
     box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 6);

@@ -20,8 +20,9 @@ void save_to_file(char * msg) {
 void send_chat(int socket) {
   int f = open("msg.txt",O_RDONLY, 0644);
   char buf[1024];
-  while ((read(f, buf, sizeof(buf)))>0) {
-    send(socket, buf, strlen(buf), 0);
+  int n;
+  while ((n = read(f, buf, sizeof(buf)))>0) {
+    send(socket, buf, n, 0);
   }
   close(f);
 }
@@ -36,7 +37,13 @@ int main(int argc, char *argv[] ) {
   listen_socket_global = listen_socket;
   signal(SIGINT, handle_sigint);
   int clients[100];
+  int max_c = 10;
   int client_count = 0;
+
+  int *clients = malloc(max_c * sizeof(int));
+  int *user = calloc(max_c, sizeof(int));
+  char (*usernames)[128] = malloc(max_c* sizeof(*usernames));
+
 
   fd_set read_fds;
 
@@ -64,6 +71,8 @@ int main(int argc, char *argv[] ) {
 
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
+	  user[client_count] = 0;
+	  usernames[client_count][0] = '\0';
       clients[client_count] = client_socket;
       client_count++;
 
@@ -83,7 +92,7 @@ int main(int argc, char *argv[] ) {
             save_to_file(leave_msg);
           }
           else{
-            snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.\n",client_count-1);
+            snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.",client_count-1);
           }
           client_count--;
           clients[i] = clients[client_count];
@@ -106,6 +115,7 @@ int main(int argc, char *argv[] ) {
           snprintf(msg, sizeof(msg),"%s has connected, %d clients online.", usernames[i], client_count);
           for(int j = 0; j < client_count; j++){
             send(clients[j], msg, strlen(msg),0);
+			save_to_file(msg);
           }
           continue;
         }

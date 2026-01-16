@@ -69,4 +69,8 @@ This document must be updated daily every time you finish a work session.
 - testing/sorting out the remainder of bugs with username connection
 - debugged the enter username on join
 - presently fixing the reset chat on disconnect, so the other chat doesn't show it
+
+### 2026-01-15 HW - video
+- polishing for the save to file system were needed so the chain of messages was clean (no excess newlines)
+- bug fixing for presentation, had to fix issues where the usernames were stored after disconnect improperly
 - added signal handling to safely shut server and let users know
