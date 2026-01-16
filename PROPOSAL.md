@@ -19,9 +19,10 @@ We want to make a messaging app that allows users to choose and message other ac
 - Creating chat server to message people (mem alloc) - Both
 - webserver used to store data in a file (sockets, select) - Both
 - Select used to read from the clients - Matthew
-- a list of chats with other users to pick from - Both
+- ability to switch addresses - Both
 - username asked for when client starts, used to identify messagers on the server - Rohan
 - GTK front end - Rohan
+- signal handling server-side - Rohan
 
 # Intended pacing:
 
