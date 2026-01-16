@@ -55,3 +55,4 @@ This document must be updated daily every time you finish a work session.
 -Edited readme to include correct and updated description
 -Edited ip address const issue
 -Final touches and bugfixes
+-Added allocation of memory for usernames so no more max clients
