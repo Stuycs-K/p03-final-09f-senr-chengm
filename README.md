@@ -3,6 +3,8 @@
 
 ### Sagacious Samosas
 
+https://www.youtube.com/watch?v=tSkC4vpZ9Wk
+
 Rohan Sen, Matthew Cheng
 
 ### Project Description:
