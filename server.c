@@ -1,5 +1,15 @@
 #include "networkstructure.h"
 
+static int shutting_down = 0;
+static int listen_socket_global = -1;
+
+static void handle_sigint(int sig) {
+  shutting_down = 1;
+  if (listen_socket_global != -1) {
+    close(listen_socket_global);
+  }
+}
+
 void save_to_file(char * msg) {
   int f = open("msg.txt",O_APPEND | O_WRONLY | O_CREAT, 0644);
   write(f, msg, strlen(msg));
@@ -24,12 +34,15 @@ int main(int argc, char *argv[] ) {
   } else {
     listen_socket = server_setup(NULL);
   }
+  listen_socket_global = listen_socket;
+  signal(SIGINT, handle_sigint);
+  int clients[100];
   int max_c = 10;
   int client_count = 0;
 
-  int *clients = malloc(max_clients * sizeof(int));
-  int *user = calloc(max_clients, sizeof(int));
-  char (*usernames)[128] = malloc(max_clients* sizeof(*usernames));
+  int *clients = malloc(max_c * sizeof(int));
+  int *user = calloc(max_c, sizeof(int));
+  char (*usernames)[128] = malloc(max_c* sizeof(*usernames));
 
   if(client_count == max_clients){
     max_clients *= 2;
@@ -44,7 +57,7 @@ int main(int argc, char *argv[] ) {
   char usernames[100][128];
   int user[100] = {0};
 
-  while(1) {
+  while(!shutting_down) {
 
     FD_ZERO(&read_fds);
     //add listen_socket and stdin to the set
@@ -133,5 +146,9 @@ int main(int argc, char *argv[] ) {
     // } else {
     //   close(client_socket);
     // }
+  }
+  char *offline = "server going offline\n";
+  for(int j = 0; j < client_count; j++){
+    send(clients[j], offline, strlen(offline), 0);
   }
 }
