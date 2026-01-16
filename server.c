@@ -41,14 +41,15 @@ int main(int argc, char *argv[] ) {
   int client_count = 0;
 
   int *clients = malloc(max_c * sizeof(int));
-  int *user = calloc(max_c, sizeof(int));
   char (*usernames)[128] = malloc(max_c* sizeof(*usernames));
+  int *user = calloc(max_c, sizeof(int));
 
   if(client_count == max_c){
-    max_c *= 2;
-    clients = realloc(clients,max_c*sizeof(int));
-    user = realloc(user,max_c*sizeof(int));
+    max_c = max_c * 2;
     usernames = realloc(usernames, max_c*sizeof(*usernames));
+    user = realloc(user,max_c*sizeof(int));
+    clients = realloc(clients,max_c*sizeof(int));
+
   }
   fd_set read_fds;
 
