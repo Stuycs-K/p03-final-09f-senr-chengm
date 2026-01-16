@@ -44,8 +44,8 @@ int main(int argc, char *argv[] ) {
   int *user = calloc(max_c, sizeof(int));
   char (*usernames)[128] = malloc(max_c* sizeof(*usernames));
 
-  if(client_count == max_clients){
-    max_clients *= 2;
+  if(client_count == max_c){
+    max_c *= 2;
     clients = realloc(clients,max_c*sizeof(int));
     user = realloc(user,max_c*sizeof(int));
     usernames = realloc(usernames, max_c*sizeof(*usernames));
@@ -74,8 +74,8 @@ int main(int argc, char *argv[] ) {
 
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
-	  user[client_count] = 0;
-	  usernames[client_count][0] = '\0';
+	    user[client_count] = 0;
+	    usernames[client_count][0] = '\0';
       clients[client_count] = client_socket;
       client_count++;
 
