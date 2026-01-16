@@ -11,7 +11,6 @@
   static char user[128];
 
   static gboolean on_server_readable(gint fd, GIOCondition cond, gpointer data) {
-    if (cond & (G_IO_HUP | G_IO_ERR)) return FALSE;
 
     char buf[1024];
     int n;
@@ -27,6 +26,7 @@
       gtk_adjustment_set_value(vadj, gtk_adjustment_get_upper(vadj));
     }
 
+    if (cond & (G_IO_HUP | G_IO_ERR)) return FALSE;
     return 1;
   }
 

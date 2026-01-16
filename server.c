@@ -121,7 +121,7 @@ int main(int argc, char *argv[] ) {
           snprintf(msg, sizeof(msg),"%s has connected, %d clients online.", usernames[i], client_count);
           for(int j = 0; j < client_count; j++){
             send(clients[j], msg, strlen(msg),0);
-			save_to_file(msg);
+			      save_to_file(msg);
           }
           continue;
         }
