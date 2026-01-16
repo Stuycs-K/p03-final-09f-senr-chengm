@@ -36,7 +36,7 @@ int main(int argc, char *argv[] ) {
   }
   listen_socket_global = listen_socket;
   signal(SIGINT, handle_sigint);
-  int clients[100];
+
   int max_c = 10;
   int client_count = 0;
 
@@ -54,8 +54,6 @@ int main(int argc, char *argv[] ) {
 
   char buff[1024];
   char buff2[1024];
-  char usernames[100][128];
-  int user[100] = {0};
 
   while(!shutting_down) {
 
