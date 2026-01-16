@@ -24,8 +24,13 @@ int main(int argc, char *argv[] ) {
   } else {
     listen_socket = server_setup(NULL);
   }
-  int clients[100];
+  int max_c = 10;
   int client_count = 0;
+
+  int *clients = malloc(max_clients * sizeof(int));
+  int *user = calloc(max_clients, sizeof(int));
+  char (*usernames)[128] = malloc(max_clients* sizeof(*usernames));
+
 
   fd_set read_fds;
 
