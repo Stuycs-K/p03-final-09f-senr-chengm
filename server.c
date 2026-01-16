@@ -71,7 +71,9 @@ int main(int argc, char *argv[] ) {
     }
 
     //select Code
-    select(fd_max + 1, &read_fds, NULL, NULL, NULL);
+    if(select(fd_max + 1, &read_fds, NULL, NULL, NULL)<0) {
+      if (shutting_down) break;
+    }
 
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
