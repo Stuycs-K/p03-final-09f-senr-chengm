@@ -1,13 +1,9 @@
 #include "networkstructure.h"
 
 static int shutting_down = 0;
-static int listen_socket_global = -1;
 
 static void handle_sigint(int sig) {
   shutting_down = 1;
-  if (listen_socket_global != -1) {
-    close(listen_socket_global);
-  }
 }
 
 void save_to_file(char * msg) {
@@ -34,7 +30,6 @@ int main(int argc, char *argv[] ) {
   } else {
     listen_socket = server_setup(NULL);
   }
-  listen_socket_global = listen_socket;
   signal(SIGINT, handle_sigint);
 
   int max_c = 10;
@@ -56,8 +51,7 @@ int main(int argc, char *argv[] ) {
   char buff[1024];
   char buff2[1024];
 
-  while(!shutting_down) {
-
+  while(1) {
     FD_ZERO(&read_fds);
     //add listen_socket and stdin to the set
     FD_SET(listen_socket, &read_fds);
@@ -71,9 +65,16 @@ int main(int argc, char *argv[] ) {
     }
 
     //select Code
-    if(select(fd_max + 1, &read_fds, NULL, NULL, NULL)<0) {
-      if (shutting_down) break;
-    }
+    select(fd_max + 1, &read_fds, NULL, NULL, NULL);
+
+	if (shutting_down == 1) {
+	   	  char *offline = "server going offline\n";
+	   	  for(int j = 0; j < client_count; j++){
+	   	  send(clients[j], offline, strlen(offline), 0);
+	   	}
+		usleep(100000);
+		exit(0);
+		}
 
     if(FD_ISSET(listen_socket, &read_fds)){
       int client_socket = server_tcp_handshake(listen_socket);
@@ -136,20 +137,6 @@ int main(int argc, char *argv[] ) {
         }
       }
     }
+  }
 
-    // pid_t f = fork();
-    // if (f == 0) {
-    //   char buf[1024];
-    //   close(listen_socket);
-    //   subserver_logic(client_socket);
-    //   close(client_socket);
-    //   exit(0);
-    // } else {
-    //   close(client_socket);
-    // }
-  }
-  char *offline = "server going offline\n";
-  for(int j = 0; j < client_count; j++){
-    send(clients[j], offline, strlen(offline), 0);
-  }
 }
