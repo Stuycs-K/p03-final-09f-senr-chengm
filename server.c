@@ -31,7 +31,12 @@ int main(int argc, char *argv[] ) {
   int *user = calloc(max_clients, sizeof(int));
   char (*usernames)[128] = malloc(max_clients* sizeof(*usernames));
 
-
+  if(client_count == max_clients){
+    max_clients *= 2;
+    clients = realloc(clients,max_c*sizeof(int));
+    user = realloc(user,max_c*sizeof(int));
+    usernames = realloc(usernames, max_c*sizeof(*usernames));
+  }
   fd_set read_fds;
 
   char buff[1024];
