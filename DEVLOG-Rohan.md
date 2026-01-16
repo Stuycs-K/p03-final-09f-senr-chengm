@@ -69,3 +69,4 @@ This document must be updated daily every time you finish a work session.
 - testing/sorting out the remainder of bugs with username connection
 - debugged the enter username on join
 - presently fixing the reset chat on disconnect, so the other chat doesn't show it
+- added signal handling to safely shut server and let users know
