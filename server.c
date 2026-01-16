@@ -67,9 +67,8 @@ int main(int argc, char *argv[] ) {
           printf("Client disconnected \n");
           char leave_msg[1024];
           if(user[i]){
-            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.\n", usernames[i], client_count-1);
+            snprintf(leave_msg,sizeof(leave_msg), "%s has disconnected, %d clients still online.", usernames[i], client_count-1);
             save_to_file(leave_msg);
-
           }
           else{
             snprintf(leave_msg,sizeof(leave_msg),"A user has disconnected, %d clients still online.\n",client_count-1);
@@ -92,8 +91,7 @@ int main(int argc, char *argv[] ) {
           user[i] = 1;
 
           char msg[1024];
-          snprintf(msg, sizeof(msg),"User: %s has connected, %d clients online.\n", usernames[i], client_count);
-          save_to_file(msg);
+          snprintf(msg, sizeof(msg),"%s has connected, %d clients online.", usernames[i], client_count);
           for(int j = 0; j < client_count; j++){
             send(clients[j], msg, strlen(msg),0);
           }
